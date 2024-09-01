@@ -1,0 +1,102 @@
+# SEC AI Assistant Plugin System  
+   
+## Overview  
+   
+This SEC AI Assistant is designed with a plugin-based architecture, allowing it to extend its functionality through various plugins. Each plugin focuses on a specific task and can be easily added or modified. This document provides an overview of the existing plugins and guidelines for creating new ones.  
+   
+## Existing Plugins  
+   
+### SECAIAssistantPlugin  
+   
+This is the base class for all plugins. It includes basic methods that can be overridden by derived classes.  
+   
+#### Methods  
+- `__init__(self, name, description, plugintype)`: Initializes the plugin with a name, description, and type.  
+- `printname(self)`: Prints the name of the plugin.  
+- `getname(self)`: Returns the name of the plugin.  
+- `runprompt(self, prompt, session)`: Placeholder method to run a prompt.  
+- `selectplugin(self, prompt)`: Determines whether the plugin should handle the given prompt.  
+- `pluginhelp(self)`: Provides help instructions for the plugin.  
+   
+### GPTPlugin  
+   
+This plugin interacts with the Azure OpenAI Client to process prompts that do not match any other specific plugin.  
+   
+#### Methods  
+- `__init__(self, name, description, plugintype, azureOpenAIClient)`: Initializes the plugin with additional Azure OpenAI Client.  
+- `selectplugin(self, prompt)`: Always returns `True`, making it the default plugin.  
+- `runpromptonAzureAI(self, prompt, session)`: Runs the prompt on Azure OpenAI.  
+- `runprompt(self, prompt, session)`: Runs the prompt using the Azure OpenAI Client.  
+- `pluginhelp(self)`: Provides help instructions for this plugin.  
+   
+### SentinelKQLPlugin  
+   
+This plugin generates and runs KQL queries adhering to the Sentinel schema.  
+   
+#### Methods  
+- `__init__(self, name, description, plugintype, azureOpenAIClient, sentinelClient, loadSchema)`: Initializes the plugin with additional clients and schema loader.  
+- `pluginhelp(self)`: Provides help instructions for this plugin.  
+- `selectplugin(self, prompt)`: Determines if the plugin should handle the given prompt based on keywords.  
+- `generateSentinelSchema(self)`: Generates the schema of Azure Sentinel tables.  
+- `loadSentinelSchema(self)`: Loads the Sentinel schema from a JSON file, generating it if it doesn't exist.  
+- `generateKQLandRun(self, prompt, session)`: Generates a KQL query from a prompt and runs it.  
+- `generateKQLandRunWithSchema(self, prompt, session)`: Generates a KQL query using the schema and runs it.  
+- `generateKQLandRunWithSchemaAndTable(self, prompt, table, session)`: Generates a KQL query using the schema for a specific table and runs it.  
+- `findTable(self, prompt, session)`: Identifies the best table to use for a given prompt.  
+- `runpromptonAzureAI(self, prompt, session)`: Runs a given prompt on the Azure OpenAI client.  
+- `runprompt(self, prompt, session)`: Convenience method to run the prompt and generate a KQL query with schema.  
+   
+### FetchURLPlugin  
+   
+This plugin retrieves and processes data from a URL.  
+   
+#### Methods  
+- `__init__(self, name, description, plugintype, azureOpenAIClient)`: Initializes the plugin with additional Azure OpenAI Client.  
+- `selectplugin(self, prompt)`: Determines if the plugin should handle the given prompt based on keywords.  
+- `pluginhelp(self)`: Provides help instructions for this plugin.  
+- `clean_html(self, html_content)`: Cleans and extracts text from HTML content.  
+- `download_and_clean_url(self, url)`: Downloads and cleans HTML content from a URL.  
+- `runprompt(self, prompt, session)`: Extracts the URL from the prompt and processes it.  
+   
+## Creating New Plugins  
+   
+To create a new plugin, follow these steps:  
+   
+1. **Create a New Plugin File**: Create a new Python file for your plugin in the `plugins` directory.  
+   
+2. **Import the Base Class**: Import the `SECAIAssistantPlugin` class from `SECAIAssistantPlugin.py`.  
+   
+3. **Define the Plugin Class**: Define your plugin class and inherit from `SECAIAssistantPlugin`.  
+   
+4. **Implement Required Methods**:  
+    - `__init__(self, name, description, plugintype, ...)`: Initialize your plugin with any additional parameters.  
+    - `selectplugin(self, prompt)`: Implement logic to determine if your plugin should handle a given prompt.  
+    - `runprompt(self, prompt, session)`: Implement the functionality to process the prompt.  
+    - `pluginhelp(self)`: Provide help instructions for your plugin.  
+   
+5. **Additional Methods**: Implement any additional methods required for your plugin's functionality.  
+   
+### Example  
+   
+```python  
+from plugins.SECAIAssistantPlugin import SECAIAssistantPlugin  
+   
+class MyCustomPlugin(SECAIAssistantPlugin):  
+    def __init__(self, name, description, plugintype, custom_param):  
+        super().__init__(name, description, plugintype)  
+        self.custom_param = custom_param  
+  
+    def selectplugin(self, prompt):  
+        return "custom" in prompt  
+  
+    def runprompt(self, prompt, session):  
+        # Custom processing logic  
+        return f"Processed prompt with custom param: {self.custom_param}"  
+  
+    def pluginhelp(self):  
+        return "Use 'custom' in your prompt to trigger this plugin."  
+```  
+   
+6. **Register the Plugin**: Ensure your plugin is registered in the main application to be utilized.  
+   
+By following these steps, you can easily extend the functionality of the SEC AI Assistant by adding new plugins tailored to specific tasks.

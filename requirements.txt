@@ -1,0 +1,10 @@
+azure-identity
+azure-monitor-query
+pandas
+msal
+openai
+colorama
+python-dotenv
+requests
+beautifulsoup4
+msgraph-sdk
