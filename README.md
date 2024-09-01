@@ -4,7 +4,7 @@ SEC AI Assistant is a Python-based AI assistant designed to interact with variou
 The goal of this project is to evaluate the usage and limits of using AI as part of Security Operations. This tool will allow you to fetch data from Security Platforms and public facing websites and run LLM prompts on top of it. 
 Currently it is available to be used from a terminal and the reponses are formated to be Terminal-friendly by the underlaying LLM. It can be extended to be used from a Web interface via REST API. 
 
-![Screenshot](./images/SEC AI Assistant - Initial Run.png)
+![Screenshot1](./images/SECAIAssistant-InitialRun.png)
 ## Main Features  
 These are the main features of the tool:  
 - Authenticate using different Azure credentials.  
@@ -31,15 +31,15 @@ Below you can find some prompts inside a session:
 `Show me main details of the last instance of incident number XXXX using kql. Limit the results to 6 more important fields and include the list related of Alert IDs`
 `Using kql get the relevant details of the above security alerts. Include the description and the related entities`
 `Produce a summary of the investigated incident` 
-![Screenshot](./images/SEC AI Assistant - Incident Listing.png)
-![Screenshot](./images/SEC AI Assistant - Incident Summary.png)
-![Screenshot](./images/SEC AI Assistant - Alert Investigation.png)
+![Screenshot2](./images/SECAIAssistant-IncidentListing.png)
+![Screenshot3](./images/SECAIAssistant-IncidentSummary.png)
+![Screenshot4](./images/SECAIAssistant-AlertInvestigation.png)
 ### URL Fetching and processing
 `Use this url to create a detection for AD object deletion https://attack.mitre.org/datasources/DS0026/#Active%20Directory%20Object%20Deletion in Sentinel`
 `I need to craft a Sentinel Analytic Rule to detect the behaviour describe above. Generate the Sentinel Analytic rule to be deployed as an ARM template. Produce the output in json format`
 `Fetch this url https://learn.microsoft.com/en-us/azure/azure-monitor/logs/query-optimization and optimize the query of the above Sentinel Analytic rule`
-![Screenshot](./images/SEC AI Assistant - Analytic Rule Generation 1.png)
-![Screenshot](./images/SEC AI Assistant - Analytic Rule Generation 2.png)
+![Screenshot5](./images/SECAIAssistant-AnalyticRuleGeneration1.png)
+![Screenshot6](./images/SECAIAssistant-AnalyticRuleGeneration2.png)
 
 ## Setup  
   
