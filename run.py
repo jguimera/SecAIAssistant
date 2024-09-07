@@ -22,18 +22,21 @@ def main():
     print_help("Use 'help' to show the help of the enabled plugins")  
     while True:  
         user_input = input(f"{Fore.GREEN}Prompt:{Fore.WHITE}")  
-        if user_input.lower() == "bye":  
-            print_info("Bye Bye")  
-            break  
-        elif user_input.lower() == "clear":   
-            secAIAssistant.clear_session()
-        elif user_input.lower() == "help":   
-            plugin_help_list=secAIAssistant.get_plugin_help()
-            for plugin_help in plugin_help_list:
-                   print_help(plugin_help)
-        else:  
-            # Run Prompt  
-            processed_response=secAIAssistant.run_prompt('terminal',user_input)
-            print_response(str(processed_response))  
+        if not user_input:
+            print_info("Please enter a valid prompt")
+        else:
+            if user_input.lower() == "bye":  
+                print_info("Bye Bye")  
+                break  
+            elif user_input.lower() == "clear":   
+                secAIAssistant.clear_session()
+            elif user_input.lower() == "help":   
+                plugin_help_list=secAIAssistant.get_plugin_help()
+                for plugin_help in plugin_help_list:
+                    print_help(plugin_help)
+            else:  
+                # Run Prompt  
+                processed_response=secAIAssistant.run_prompt('terminal',user_input)
+                print_response(str(processed_response))  
 if __name__ == "__main__":
     main()
