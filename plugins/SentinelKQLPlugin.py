@@ -37,6 +37,14 @@ class SentinelKQLPlugin(SECAIAssistantPlugin):
         :return: Help instructions string  
         """  
         return "Use 'kql' in your prompt to generate and run KQL adhering to the Sentinel schema."  
+    def plugincapabilities(self):  
+        """  
+        Provide the plugin capabilities.  
+  
+        :return: plugin capabilities object  
+        """  
+        capabilities={'generateandrunkql':"This capability allows to generate a KQL query to retrieve logs and events from Microsoft Sentinel. This capability should be used when the user ask about retrieving new incidents or alerts. Other type of common data is Signin and Audit logs."}
+        return  capabilities
   
     def selectplugin(self, prompt):  
         """  
