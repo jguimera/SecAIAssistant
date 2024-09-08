@@ -14,3 +14,11 @@ class GPTPlugin(SECAIAssistantPlugin):
     #Shows the instructions to use this plugin
     def pluginhelp(self):
         return "If your prompt doens't match any other plugin checks it will be submited to the GPT model"
+    def plugincapabilities(self):  
+        """  
+        Provide the plugin capabilities.  
+  
+        :return: plugin capabilities object  
+        """  
+        capabilities={'runprompt':"This capability allows run a prompt without retrieving any additional data. This plugin should be use if the user prompt doesn't require any additional or external data."}
+        return  capabilities

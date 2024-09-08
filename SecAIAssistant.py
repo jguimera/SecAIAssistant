@@ -7,17 +7,19 @@ from plugins.GPTPlugin import GPTPlugin
 from plugins.FetchURLPlugin import FetchURLPlugin  
 from colorama import Fore  
 from HelperFunctions import *  
-  
+import json 
 class SecAIAssistant:  
     def __init__(self, auth_type):  
         self.client_list = {}  
-        self.plugin_list = {}  
+        self.plugin_list = {} 
+        self.plugin_capabilities={}
         self.session = []  
         self.context_window_size = int(os.getenv('ASSISTANT_CONTEXT_WINDOW_SIZE', 5))  
         self.print_intro_message()  
         self.auth(auth_type)  
         self.create_clients()  
         self.load_plugins()  
+        self.load_plugin_capabilities()
   
     def auth(self, auth_type):  
         """  
@@ -83,7 +85,11 @@ class SecAIAssistant:
                 self.client_list["azure_openai_client"]  
             )  
         }  
-  
+    def load_plugin_capabilities(self):
+        self.plugin_capabilities={}
+        for plugin_name in self.plugin_list.keys():
+            plugincapability=self.plugin_list[plugin_name].plugincapabilities()
+            self.plugin_capabilities[plugin_name]= plugincapability
     def select_plugin(self, prompt):  
         """  
         Select the appropriate plugin based on the input prompt. Each prompt decides based on internal checks.  
@@ -97,7 +103,42 @@ class SecAIAssistant:
                 selected_plugin_name = plugin.getname()  
                 print_info(f"Selected plugin: {selected_plugin_name}")  
                 return selected_plugin_name  
-  
+    def select_plugin_model(self, prompt):  
+        """  
+        Select the appropriate plugin based on the input prompt. Each prompt decides based on internal checks.  
+        """  
+        system_message = (  
+                'You are an AI assistant that is part of a system that takes a user prompt and process it with one of the capabilities from the available plugins.\n '
+                'You will receive the  user prompt and the list of available plugins and its capabilities in JSON format.\n'  
+                'Each plugin might have one or more capabilities.\n'
+                'Your task is to select the most appropiate plugin and capability to process the user prompt.\n'  
+                'I will parse the output inside a python script so It must be returned using only JSON format and will follow this schema {"plugin_name":"<selecte_plugin_name>","capability_name":"<selected_capability_name>"}\n'  
+                )
+        sample_user_prompt='Can you please list the last Sentinel Incidents with High Severity'
+        example_user_message=(
+            'Please I need you to return the best available plugin and capabilitiy to fulfill the user prompt. Follow the previous instructions.\n'
+            'This is the list of available plugins and its capabilities:'
+            f'{self.plugin_capabilities}'
+            'This is the user prompt:'
+            f'{sample_user_prompt}'
+            )
+        example_assistant_message=(
+                '{"plugin_name":"SentinelKQLPlugin","capability_name":"generateandrunkql"}'  
+            )
+        system_object = {"role":"system","content":system_message}
+        user_object = {"role": "user", "content": [{"type": "text", "text": example_user_message}]}  
+        assistant_object = {"role": "assistant", "content": [{"type": "text", "text": example_assistant_message}]}  
+        new_session=[]
+        new_session.append(system_object)  
+        new_session.append(user_object)  
+        new_session.append(assistant_object)
+        #print(new_session)
+        selected_plugin_string= self.plugin_list["GPTPlugin"].runprompt(prompt, new_session)  
+        # Clean tags from result  
+        selected_plugin_string_clean = selected_plugin_string.replace("```plaintext", "").replace("```json", "").replace("```", "")  
+        print(selected_plugin_string_clean)
+        obj = json.loads(selected_plugin_string_clean) 
+        return obj
     def get_plugin(self, plugin_id):  
         """  
         Get the plugin instance by its ID.  
@@ -171,7 +212,8 @@ class SecAIAssistant:
         """  
         Run the provided prompt using the selected plugin and process the response.  
         """  
-        plugin_response = self.get_plugin(self.select_plugin(prompt)).runprompt(prompt, self.session)  
+        selected_plugin=self.select_plugin_model(prompt)
+        plugin_response = self.get_plugin(selected_plugin['plugin_name']).runprompt(prompt, self.session)  
         self.update_session(prompt, plugin_response)  
   
         print_info(f"Processing Response (Session Lenght: {len(self.session)})")  

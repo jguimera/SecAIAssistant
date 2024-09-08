@@ -36,6 +36,14 @@ class FetchURLPlugin(SECAIAssistantPlugin):
         """  
         return "Use 'fetch', 'url', or 'download' in your prompt to retrieve data from a URL and process it."  
   
+    def plugincapabilities(self):  
+        """  
+        Provide the plugin capabilities.  
+  
+        :return: plugin capabilities object  
+        """  
+        capabilities={'fetchurl':"This capability retrieves data from external urls or site to be processed inside the session."}
+        return  capabilities
     def clean_html(self, html_content):  
         """  
         Clean and extract text from HTML content.  

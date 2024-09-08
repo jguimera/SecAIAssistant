@@ -10,8 +10,13 @@ class AzureOpenAIClient():
         )
     
     def runPrompt(self,prompt,session=[]):
-        message_object = [{"role":"system","content":"As an AI specializing in security analytics, your task is to analyze and write Sentinel Analytic rules based on KQL queries and other properties. You are also an expert in summarizing Security data and events."}]
-        message_object.extend(session)
+        if (len(session)>0 and session[0]['role']=='system'):
+            #session already contains System message
+            message_object=session
+        else:
+            #session without System Message. Using Detault
+            message_object = [{"role":"system","content":"As an AI specializing in security analytics, your task is to analyze and write Sentinel Analytic rules based on KQL queries and other properties. You are also an expert in summarizing Security data and events."}]
+            message_object.extend(session)
         message_object.append({"role":"user","content":prompt})
         result=''
         status='success'
@@ -34,6 +39,7 @@ class AzureOpenAIClient():
             result=e.code+' - '+e.message
         except APIConnectionError as e:
             status='error'
-            result=e.code+' - '+e.message
+            result=e.message
+            print (e)
         result_object={"status":status,"result":result,"session_tokens":session_tokens}
         return result_object

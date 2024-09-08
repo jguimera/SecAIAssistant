@@ -15,3 +15,6 @@ class SECAIAssistantPlugin:
         return True
     def pluginhelp(self):
         return "Use 'string' in your prompt to generate and run KQL adhering to the Sentinel schema"
+    def plugincapabilities(self):  
+        capabilities={'plugincapabilitiy':"This capability allows for."}
+        return  capabilities
