@@ -103,16 +103,19 @@ class SecAIAssistant:
                 selected_plugin_name = plugin.getname()  
                 print_info(f"Selected plugin: {selected_plugin_name}")  
                 return selected_plugin_name  
-    def select_plugin_model(self, prompt):  
+    def decompose_in_tasks(self, prompt):  
         """  
         Select the appropriate plugin based on the input prompt. Each prompt decides based on internal checks.  
         """  
         system_message = (  
-                'You are an AI assistant that is part of a system that takes a user prompt and process it with one of the capabilities from the available plugins.\n '
-                'You will receive the  user prompt and the list of available plugins and its capabilities in JSON format.\n'  
+                'You are an AI assistant that is part of a system that takes a user prompt and process it with one or more of the capabilities from the available plugins.\n '
+                'You will receive the user prompt and the list of available plugins and its capabilities in JSON format.\n'  
                 'Each plugin might have one or more capabilities.\n'
-                'Your task is to select the most appropiate plugin and capability to process the user prompt.\n'  
-                'I will parse the output inside a python script so It must be returned using only JSON format and will follow this schema {"plugin_name":"<selecte_plugin_name>","capability_name":"<selected_capability_name>"}\n'  
+                'Your task is to select the most appropiate plugins and capabilities to process the user prompt.\n'  
+                'Evaluate if the prompt of the user can be answered by only one of the capabilities or you need to decompose the prompt in multiple sub-prompts(tasks) that will be executed sequentially.'
+                'When decompasing the user prompt in multiple sub-prompts take into account that each sub-prompt will have the results of the precious ones as context.'
+                'In case only one prompt is needed, make sure you still return an array with just one element and reformat the user prompt to achieve better results.'
+                'I will parse the output inside a python script so It must be returned using only JSON format and will follow this schema [{"plugin_name":"<selecte_plugin_name>","capability_name":"<selected_capability_name>","prompt":"new sub-prompt"}]\n'  
                 )
         sample_user_prompt='Can you please list the last Sentinel Incidents with High Severity'
         example_user_message=(
@@ -123,7 +126,7 @@ class SecAIAssistant:
             f'{sample_user_prompt}'
             )
         example_assistant_message=(
-                '{"plugin_name":"SentinelKQLPlugin","capability_name":"generateandrunkql"}'  
+                '[{"plugin_name":"SentinelKQLPlugin","capability_name":"generateandrunkql"}]'  
             )
         system_object = {"role":"system","content":system_message}
         user_object = {"role": "user", "content": [{"type": "text", "text": example_user_message}]}  
@@ -212,13 +215,15 @@ class SecAIAssistant:
         """  
         Run the provided prompt using the selected plugin and process the response.  
         """  
-        selected_plugin=self.select_plugin_model(prompt)
-        plugin_response = self.get_plugin(selected_plugin['plugin_name']).runprompt(prompt, self.session)  
-        self.update_session(prompt, plugin_response)  
-  
+        task_results=[]
+        decomposed_tasks=self.decompose_in_tasks(prompt)
+        for task in decomposed_tasks:
+            plugin_response = self.get_plugin(task['plugin_name']).runprompt(task['prompt'], self.session)  
+            self.update_session(prompt, plugin_response)  
+            processed_response = self.process_response(output_type, prompt, str(plugin_response))
+            task_results.append(processed_response)  
         print_info(f"Processing Response (Session Lenght: {len(self.session)})")  
-        processed_response = self.process_response(output_type, prompt, str(plugin_response))  
-        return processed_response  
+        return task_results  
   
     def update_session(self, prompt, plugin_response):  
         """  

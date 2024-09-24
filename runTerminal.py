@@ -36,7 +36,8 @@ def main():
                     print_help(plugin_help)
             else:  
                 # Run Prompt  
-                processed_response=secAIAssistant.run_prompt('terminal',user_input)
-                print_response(str(processed_response))  
+                processed_responses=secAIAssistant.run_prompt('terminal',user_input)
+                for response in processed_responses:
+                    print_response(str(response))  
 if __name__ == "__main__":
     main()
