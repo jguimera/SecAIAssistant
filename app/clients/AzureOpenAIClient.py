@@ -14,13 +14,18 @@ class AzureOpenAIClient():
             #session already contains System message
             message_object=session
         else:
-            #session without System Message. Using Detault
-            message_object = [{"role":"system","content":"As an AI specializing in security analytics, your task is to analyze and write Sentinel Analytic rules based on KQL queries and other properties. You are also an expert in summarizing Security data and events."}]
+            #session without System Message. Using Default
+            message_object = [{"role":"system","content":"As an AI specializing in security analytics, your task is to retrieve and analyze security data from various platforms."}]
             message_object.extend(session)
         message_object.append({"role":"user","content":prompt})
         result=''
         status='success'
         session_tokens=''
+        #print(prompt)
+        with open('promptaudit.log', 'a', encoding='utf-8') as f:  
+            f.write(''.join(prompt))
+            f.close()
+            #json.dump(table_schemas, f, ensure_ascii=False, indent=4)
         try:
             completion = self.client.chat.completions.create(
             model=self.model_name,#Deployment Name
@@ -34,6 +39,7 @@ class AzureOpenAIClient():
             )
             result=completion.choices[0].message.content
             session_tokens=str(completion.usage.total_tokens)
+
         except BadRequestError as e:  
             status='error'
             result=e.code+' - '+e.message
@@ -42,4 +48,8 @@ class AzureOpenAIClient():
             result=e.message
             print (e)
         result_object={"status":status,"result":result,"session_tokens":session_tokens}
+        #print(result)
+        with open('promptaudit.log', 'a', encoding='utf-8') as f:  
+            f.write(result)
+            f.close()
         return result_object

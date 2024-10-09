@@ -2,8 +2,8 @@ import os
 import argparse  
 from colorama import Fore  
 from dotenv import load_dotenv  
-from SecAIAssistant  import SecAIAssistant  
-from HelperFunctions import *
+from app.SecAIAssistant  import SecAIAssistant  
+from app.HelperFunctions import *
 load_dotenv()
 
 # Parse Arguments and decide which Authentication to use  

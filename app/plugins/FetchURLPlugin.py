@@ -1,4 +1,4 @@
-from plugins.SECAIAssistantPlugin import SECAIAssistantPlugin  
+from app.plugins.SECAIAssistantPlugin import SECAIAssistantPlugin  
 import requests  
 from bs4 import BeautifulSoup  
   
@@ -18,15 +18,6 @@ class FetchURLPlugin(SECAIAssistantPlugin):
         """  
         super().__init__(name, description, plugintype)  
         self.azureOpenAIClient = azureOpenAIClient  
-  
-    def selectplugin(self, prompt):  
-        """  
-        Determine if this plugin should handle the given prompt based on keywords.  
-  
-        :param prompt: Input prompt  
-        :return: True if the plugin should handle the prompt, else False  
-        """  
-        return any(keyword in prompt for keyword in ["url", "fetch", "download"])  
   
     def pluginhelp(self):  
         """  
@@ -86,7 +77,7 @@ class FetchURLPlugin(SECAIAssistantPlugin):
         else:  
             return f"Failed to retrieve content. Status code: {response.status_code}" 
   
-    def runprompt(self, prompt, session):  
+    def runprompt(self, prompt, session,channel):  
         """  
         Extract the URL from the prompt and process it.  
   
@@ -106,6 +97,7 @@ class FetchURLPlugin(SECAIAssistantPlugin):
             # Download and clean the content from the extracted URL
             prompt_result=result_object['result']
             url=prompt_result.replace("```plaintext", "").replace("```", "").replace("\n", "").strip()   
-            return self.download_and_clean_url(url)
+            result_object['result']=self.download_and_clean_url(url)
+            return result_object
         else:
-            return result_object['result']
+            return result_object

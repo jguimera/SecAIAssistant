@@ -1,39 +1,55 @@
 # SEC AI Assistant  
   
-SEC AI Assistant is a Python-based AI assistant designed to interact with various Azure services, fetch and process public URL data, and generate responses using Azure OpenAI GPT models. This assistant can be run in a terminal and supports different authentication methods.  
-The goal of this project is to evaluate the usage and limits of using AI as part of Security Operations. This tool will allow you to fetch data from Security Platforms and public facing websites and run LLM prompts on top of it. 
-Currently it is available to be used from a terminal and the reponses are formated to be Terminal-friendly by the underlaying LLM. It can be extended to be used from a Web interface via REST API. 
-
-![Screenshot1](./images/SECAIAssistant-InitialRun.png)
+SEC AI Assistant is a Python-based AI assistant designed to interact with Security Solutions (currently only Microsoft Sentinel), fetch and process public URL data, and process the data and generate responses using LLMs (currently Azure OpenAI GPT models). This assistant can be used from the terminal or from a web interface. It supports different authentication methods.  
+The goal of this project is to evaluate the usage and limits of using AI as part of Security Operations.
+Currently its implemented to be run locally and by one user at a time. All the prompts run in the same session. 
+![Screenshot1](./images/SECAIAssistant-Home.png)
+## Disclaimer
+- Please be aware that using this tool will generate costs on your Azure OpenAI instance. It's important to monitor your usage to avoid unexpected charges. The more data that is processes by the LLM the higher the cost. See Sentinel plugin description below to understand possible cost increases. 
+- This tool does not incorporate any security measures. It is essential to understand that any data entered into the tool is not protected. Avoid using real or sensitive data, and ensure that you take necessary precautions to safeguard your information.
+- This tool is designed solely for research and testing purposes and is not suited for production environments. It has not undergone rigorous testing or optimization for live deployment. Use it at your own risk, and be prepared for potential instability or issues.
 ## Main Features  
 These are the main features of the tool:  
-- Authenticate using different Azure credentials.  
-- Extensible with custom plugins to connect to different platforms.  
+- Prompt decomposition in multiple tasks.
+- Extensible with custom plugins and clients to connect to different platforms. 
+- Authenticate to azure using different credentials type.  
 - Fetch and process data from public URLs.  
 - Generate responses using Azure OpenAI GPT models.  
 - Session context for better interaction and use previous results in new prompts.  
 ## How it works
-Every time the user submits a prompt the tool executes this steps: 
-- Plugin selection: This is currently done by looking por specific strings inside the prompt. Each plugin has these strings inside its definition and the first one with a match is selected. 
-- Prompt execution: The current session and the prompt is sent to the plugin. Each plugin will process the inputs in its own way. Plugins can make use of the different clients to retrieve data from external platforms/sites and use the LLM to process the prompt (ie. Select the Sentinel table and generate a KQL to be run). 
-- Response processing: Once the plugin sends back the response the underneatch LLM is used to produce a response using the data and the session context in the right format (terminal output)
+Every time the user submits a prompt the tool executes this steps:
+- Prompt is decompsed in one or multiple sub-prompts (tasks) depending on its complexity. 
+- For each task the tool will select the most appropriate plugin between the available ones and create the propmpt for this subtask.
+- Each task will will be executed by selected plugin. Plugins can make use of the different clients to retrieve data from external platforms/sites and use the LLM to process the prompt (ie. Select the Sentinel table and generate a KQL to be run). 
+- Response processing: Once the plugin sends back the response the underneatch LLM is used to produce a response using the data and the session context in the right format (terminal output/HTML)
+![Screenshot1](./images/SECAIAssistant-PromptFlow.png)
 
 ## Current plugins  
   
-- GPT: Run prompts using Azure OpenAi client. 
-- Sentinel KQL: Generate and run KQL queries in your Sentinel instance. It uses available tables and actual Sentinel Schema to generate valid KQL queries. Currently KQL queries with only one table are generated. 
-- FetchURL: Fetch and process data from public URLs.
+- GPT: Run prompts using Azure OpenAi client. It uses the previous prompts and responses as context.
+- Sentinel KQL: 
+    - Generate and run KQL queries in your Sentinel instance. It uses available tables and actual Sentinel Schema to generate valid KQL queries. Currently KQL queries with only one table are generated. 
+    - This plugin will use Azure OpenAI to create an extended Sentinel Schema. THe first time the tool is executed It runs a prompt for each table with 3 sample log entries to extract the table description and the most relevant fields. This task will be perfomed only the first time the tool is run. If you want to avoid this cost and not use the Sentinel Schema feature
+- FetchURL: Fetch and process data from public URLs. The plugin logic removes unnecesary code (Javascript and CSS) from the downloaded site to reduce token consumption.
 
+## Future improvements
+- Better Session management (sumarization to reduce the tokens)
+- Generate KQL queries with multiple tables
+- Retry failed prompts/queries 
+- Multiuser/mutisession
+- Additional plugins (Graph API / Defender XDR)
+  
 ## Sample prompts    
 Below you can find some prompts inside a session:
 ### Incident Investigation
-`Use KQL to show me the list of High or Medium severity  incidents with status New in Sentinel for the last 7 days. Show me the incident number, title and severity. Make sure you only show me the last entry for each incident.`
-`Show me main details of the last instance of incident number XXXX using kql. Limit the results to 6 more important fields and include the list related of Alert IDs`
-`Using kql get the relevant details of the above security alerts. Include the description and the related entities`
-`Produce a summary of the investigated incident` 
-![Screenshot2](./images/SECAIAssistant-IncidentListing.png)
-![Screenshot3](./images/SECAIAssistant-IncidentSummary.png)
-![Screenshot4](./images/SECAIAssistant-AlertInvestigation.png)
+`Show me the list incidents with status New in Sentinel for the last 30 days. Show me the incident number, title and severity. Make sure you only show me the last entry for each incident.`
+`Show me main details of the last instance of incident number XXXXX. Limit the results to 6 more important fields and include the list related of Alert IDs`
+`Use the AlertIds from previous incident get the relevant details of the above security alerts. Include the description and the related entities`
+`Get the signin logs in the last 24 hours for the users included in the previous alerts`
+`Produce an Executive Summary of the investigated incident` 
+![Screenshot2](./images/SECAIAssistant-AlertDetails.png)
+![Screenshot3](./images/SECAIAssistant-SigninLogs.png)
+![Screenshot4](./images/SECAIAssistant-ExecutiveSummary.png)
 ### URL Fetching and processing
 `Use this url to create a detection for AD object deletion https://attack.mitre.org/datasources/DS0026/#Active%20Directory%20Object%20Deletion in Sentinel`
 `I need to craft a Sentinel Analytic Rule to detect the behaviour describe above. Generate the Sentinel Analytic rule to be deployed as an ARM template. Produce the output in json format`
@@ -88,48 +104,42 @@ Below you can find some prompts inside a session:
     AZURE_OPENAI_APIKEY=your-azure-openai-apikey  
     AZURE_OPENAI_MODELNAME=your-azure-openai-modelname  
     ASSISTANT_CONTEXT_WINDOW_SIZE=5  
+    #Plugins Config
+    #Enable Sentinel Schema generation for enchance KQL generation. Use String value
+    SENTINELKQL_LOADSCHEMA="True"
     ```  
   
 ## Usage  
   
 ### Running the Assistant  
   
-To run the SEC AI Assistant, use the `run.py` script. You can choose the authentication method (`interactive`, `client_secret`, or `default`) by providing it as an argument.  
+To run the SEC AI Assistant, use one of the `run*.py` scripts. Currently you can run the tool for Terminal interface `runTerminal.py` or via Web`runWeb.py` You can choose the authentication method (`interactive`, `client_secret`, or `default`) by providing it as an argument.  
   
 ```bash  
-python run.py [auth]  
+python runTerminal.py [auth]  
 ```
 
-For example, to run with interactive authentication:
+For example, to run Web with interactive authentication:
 
 ```bash  
-python run.py interactive  
+python runWeb.py interactive  
 ```
 A browser window will be open to login as an Entra ID user. 
 
-### Terminal Instructions
-You can type your prompt directly into the terminal. 
-There are some predefined shortcuts:
-- Exit the assistant: Type `bye`
-- Clear the session: Type `clear`
-- Get plugin help: Type `help`
-Each plugin will look for specific strings in the prompt to execute the request. 
-Current plugins will look fo these strings in the prompt:
-- KQL Query generation and execution in Sentinel: Include  `KQL` or   `query` in your prompt.
-- Fetch and process public URL data: Include `URL` or `Fetch` in your prompt
- 
-
 ## Project Structure
  
-- SecAIAssistant.py: Main class implementing the assistant functionalities.
-- run.py: Script to run the assistant from the terminal.
-- clients/: Directory containing client classes for interacting with Azure services.Plugins will use these clients. 
-- plugins/: Directory containing plugin classes for various functionalities.
-- HelperFunctions.py: Helper functions for logging and printing messages.
+- runWeb.py: Script to run the assistant from the web browser.
+- runTerminal.py: Script to run the assistant from the terminal.
+- app/SecAIAssistant.py: Main class implementing the assistant functionalities.
+- app/HelperFunctions.py: Helper functions for logging and printing messages.
+- app/clients/: Directory containing client classes for interacting with Azure services.Plugins will use these clients. 
+- app/plugins/: Directory containing plugin classes for various functionalities.
+- webapp/: Directory containing Flask website files (Routes, Temaplates, Statics).
+
 
 ## Extending the platform
 
-You can build your own custom plugins by extending the SECAIAssistanPlugin class and adding your plugin to the project structure. See plugins README for more details. 
+You can build your own clients and custom plugins by extending the SECAIAssistanPlugin class and adding your plugin to the project structure. See plugins README for more details. 
 Currently you need to manually add the custom plugin instantiation to the main SecAIAssistant class (load_plugins method)
 
 ## Contributing

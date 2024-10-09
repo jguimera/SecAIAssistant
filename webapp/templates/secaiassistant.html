@@ -1,0 +1,287 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>SEC AI Assistant</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            background-color: #f4f4f9;  
+            display: flex;  
+            justify-content: center;  
+            align-items: center;  
+            height: 100vh;  
+            margin: 0;  
+        }  
+        #chat-container {  
+            min-height: 400px;  
+            max-height: 90%;  
+            width: 60%;  
+            background-color: #fff;  
+            border-radius: 8px;  
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+            overflow: hidden;  
+            display: flex;  
+            flex-direction: column;  
+            position: relative;  
+        }  
+        #logo {  
+            padding: 10px;  
+            text-align: center;  
+        }  
+        #messages {  
+            padding: 10px;  
+            height: 60%;  
+            overflow-y: scroll;  
+            border-bottom: 1px solid #ddd;  
+            flex: 1;  
+        }  
+        .message {  
+            margin-bottom: 15px;  
+        }  
+        .message span {  
+            display: inline-block;  
+        }  
+        .user {  
+            text-align: right;  
+
+        } 
+        .user span{  
+
+            background-color: darkslateblue;  
+            border-radius: 4px;  
+            color: #f4f4f4;
+            padding: 2px;
+        } 
+        .debug {  
+            text-align: right;  
+
+        } 
+        .debug span{  
+
+            background-color: rgb(179, 178, 184);  
+            border-radius: 4px;  
+            color: #070606;
+            padding: 2px;
+            font-size: small;
+        } 
+        .bot {  
+            text-align: left;  
+        }  
+        .bot span{  
+            background-color:rgb(188 216 234);
+            border-radius: 4px;  
+            color: #070606;
+            padding: 5px;
+        } 
+        #input-container {  
+            display: flex;  
+            border-top: 1px solid #ddd;  
+        }  
+        #input {  
+            flex: 1;  
+            padding: 10px;  
+            border: none;  
+            border-right: 1px solid #ddd;  
+        }  
+        #send, #clear, #toggle-debug {  
+            padding: 10px;  
+            background-color: #007bff;  
+            color: white;  
+            border: none;  
+            cursor: pointer;  
+        }  
+        #toggle-debug {  
+              
+            background-color: #216104;  
+                    }
+        #clear {  
+            background-color: #dc3545;  
+        }  
+        #loading-message {  
+            text-align: center;  
+            color: #888;  
+            display: none;  
+            vertical-align: super;
+        }  
+        #debug-panel {  
+            width: 500px;  
+            height: 100%;  
+            background-color: #f4f4f4;  
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);  
+            overflow-y: scroll;  
+            transition: transform 0.3s;  
+            transform: translateX(100%);  
+            position: absolute;  
+            top: 0;  
+            right: 0;  
+            white-space: pre-wrap;
+            font-size: small;
+        }  
+        #debug-panel.visible {  
+            transform: translateX(0);  
+        }  
+        #debug-panel {  
+            padding: 10px;  
+        } 
+        #debug-messages div {  
+            padding: 10px;  
+        }  
+        tbody tr.active-row {
+            font-weight: bold;
+            color: #009879;
+        }
+        tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+        tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+        th,td {
+            padding: 12px 15px;
+        }
+
+        thead tr {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* HTML: <div class="loader"></div> */
+/* HTML: <div class="loader"></div> */
+.loader {
+    display: inline-grid;
+  height: 30px;
+  aspect-ratio: 2.5;
+  --_g: no-repeat radial-gradient(farthest-side,#000 90%,#0000);
+  background: var(--_g), var(--_g), var(--_g), var(--_g);
+  background-size: 20% 50%;
+  animation: l44 1s infinite linear alternate; 
+}
+@keyframes l44 {
+  0%,
+  5%    {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
+  12.5% {background-position: calc(0*100%/3) 0   ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
+  25%   {background-position: calc(0*100%/3) 0   ,calc(1*100%/3) 0   ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
+  37.5% {background-position: calc(0*100%/3) 100%,calc(1*100%/3) 0   ,calc(2*100%/3) 0   ,calc(3*100%/3) 50% }
+  50%   {background-position: calc(0*100%/3) 100%,calc(1*100%/3) 100%,calc(2*100%/3) 0   ,calc(3*100%/3) 0   }
+  62.5% {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 100%,calc(2*100%/3) 100%,calc(3*100%/3) 0   }
+  75%   {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 100%,calc(3*100%/3) 100%}
+  87.5% {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 100%}
+  95%,
+  100%  {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
+}
+
+    </style>  
+</head>  
+<body>  
+    <div id="chat-container">  
+        <div id="logo">  
+            <img src="/static/logo.png" alt="Logo" height="60">  
+        </div>  
+        <div id="messages"></div>  
+        <div id="loading-message"><span></span><div class="loader"></div>  </div>  
+        <div id="input-container">  
+            <input type="text" id="input" placeholder="Enter your prompt..." />  
+            <button id="send">Send</button>  
+            <button id="clear">Clear</button>  
+            <button id="toggle-debug">Show Debug</button>  
+        </div>  
+        <div id="debug-panel">  
+            <div id="debug-messages"></div>  
+        </div>  
+    </div>  
+  
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>  
+    <script>  
+        const socket = io.connect(location.protocol+'//' + document.domain + ':' + location.port + '/secai');  
+        const messagesContainer = document.getElementById('messages');  
+        const inputField = document.getElementById('input');  
+        const sendButton = document.getElementById('send');  
+        const clearButton = document.getElementById('clear');  
+        const toggleDebugButton = document.getElementById('toggle-debug');  
+        const loadingMessage = document.getElementById('loading-message');  
+        const debugPanel = document.getElementById('debug-panel');  
+        const debugMessagesContainer = document.getElementById('debug-messages');  
+  
+        function addMessage(response, className) {  
+            const messageElement = document.createElement('div');  
+            messageElement.className = 'message ' + className;  
+            messageElement.innerHTML = `<span>${response}</span>`;  
+            messagesContainer.appendChild(messageElement);  
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;  
+        }  
+  
+        function handleUserInput() {  
+            const userInput = inputField.value.trim();  
+            if (userInput) {  
+                addMessage(userInput, 'user');  
+                socket.emit('prompt', userInput);  
+                inputField.value = '';  
+                showLoadingMessage();  
+            }  
+        }  
+  
+        function showLoadingMessage() {  
+            loadingMessage.style.display = 'block';  
+        }  
+  
+        function hideLoadingMessage() {  
+            loadingMessage.style.display = 'none';  
+        }  
+  
+        sendButton.addEventListener('click', handleUserInput);  
+  
+        inputField.addEventListener('keypress', function(event) {  
+            if (event.key === 'Enter') {  
+                handleUserInput();  
+            }  
+        });  
+  
+        clearButton.addEventListener('click', function() {  
+            messagesContainer.innerHTML = '';
+            hideLoadingMessage();  
+            socket.emit('clear_session', {});  
+
+        });  
+  
+        toggleDebugButton.addEventListener('click', function() {  
+            debugPanel.classList.toggle('visible');  
+        });  
+  
+        document.addEventListener('click', function(event) {  
+            if (!debugPanel.contains(event.target) && !toggleDebugButton.contains(event.target)) {  
+                debugPanel.classList.remove('visible');  
+            }  
+        });  
+        socket.on('completedmessage', function(message_object) {  
+            hideLoadingMessage();    
+        });
+        socket.on('resultmessage', function(message_object) {  
+            addMessage(message_object.message, 'bot');  
+        });  
+        socket.on('systemmessage', function(message_object) {  
+            addMessage(message_object.message, 'debug');
+        });  
+        socket.on('debugmessage', function(message_object) {  
+            const debugMessageElement = document.createElement('div');  
+            debugMessageElement.textContent = message_object.message;  
+            debugMessagesContainer.appendChild(debugMessageElement);  
+            debugMessagesContainer.scrollTop = debugMessagesContainer.scrollHeight;  
+        });  
+    </script>  
+</body>  
+</html>  

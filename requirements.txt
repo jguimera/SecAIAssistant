@@ -8,3 +8,6 @@ python-dotenv
 requests
 beautifulsoup4
 msgraph-sdk
+#Webapp
+flask
+flask-socketio

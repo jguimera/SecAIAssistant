@@ -1,4 +1,4 @@
-from HelperFunctions import * 
+from app.HelperFunctions import * 
 class SECAIAssistantPlugin:
     def __init__(self, name, description,plugintype):
         self.name = name
@@ -9,10 +9,8 @@ class SECAIAssistantPlugin:
         print(self.name)
     def getname(self):
         return self.name
-    def runprompt(self,prompt,session):
+    def runprompt(self,prompt,session,channel):
         print(self.prompt)
-    def selectplugin(self,prompt):
-        return True
     def pluginhelp(self):
         return "Use 'string' in your prompt to generate and run KQL adhering to the Sentinel schema"
     def plugincapabilities(self):  
