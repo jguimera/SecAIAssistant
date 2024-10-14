@@ -33,6 +33,7 @@ Every time the user submits a prompt the tool executes this steps:
 - FetchURL: Fetch and process data from public URLs. The plugin logic removes unnecesary code (Javascript and CSS) from the downloaded site to reduce token consumption.
 
 ## Future improvements
+- Add multiple capabiities to plugins. Currently only one per plugin is available.
 - Better Session management (sumarization to reduce the tokens)
 - Generate KQL queries with multiple tables
 - Retry failed prompts/queries 
