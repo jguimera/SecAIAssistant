@@ -92,10 +92,11 @@ class SecAIAssistant:
         for plugin_name in self.plugin_list.keys():
             plugincapability=self.plugin_list[plugin_name].plugincapabilities()
             self.plugin_capabilities[plugin_name]= plugincapability
-    def decompose_in_tasks(self, prompt,channel):  
+    def decompose_in_tasks(self, prompt, channel):  
         """  
-        Select the appropriate plugin based on the input prompt. Each prompt decides based on internal checks.  
+        Select the appropriate plugin based on the input prompt.  
         """  
+        # System message to guide the AI assistant on how to decompose the prompt into tasks
         system_message = (  
                 'You are an AI assistant that is part of a system that takes a user prompt and process it with one or more of the capabilities from the available plugins.\n '
                 'You will receive the user prompt and the list of available plugins and its capabilities in JSON format.\n'  
@@ -106,32 +107,41 @@ class SecAIAssistant:
                 'Make sure you always return an array even if it contains only one task.\n'
                 'Include all the necessary details in the description of each task to achieve the expected results.\n'
                 'I will parse the output inside a python script so It must be returned using only JSON format and will follow this schema [{"plugin_name":"<selected_plugin_name>","capability_name":"<selected_capability_name>","task":"<Task detailed description>"}]'  
+                'This is the list of available plugins and its capabilities (in JSON format) you have use to perform the decomposition in tasks of the user prompt:\n'
+                f'{self.plugin_capabilities}'
                 )
-        extended_user_prompt=(
-            'Please, I need you to return the best available plugin or plugins and its capabilities to fulfill the following user request. Follow the system instructions and also consider the previous user and assistant messages (Session context) to produce context-aware results.\n'
-            'This is the user request you need to decompose:\n'
-            f'{prompt} \n'
-            'This is the list of available plugins and its capabilities (in JSON format) you can use to perform the decomposition in tasks:\n'
-            f'{self.plugin_capabilities}'
+        
+        # User prompt to be decomposed into tasks
+        extended_user_prompt = (
+            'This is the user prompt you need to decompose in tasks following provided instructions:\n'
+            f'{prompt}'
             )
-        system_object = {"role":"system","content":system_message}
-        new_session=[]
+        
+        # Create a new session with the system message and the current session
+        system_object = {"role": "system", "content": system_message}
+        new_session = []
         new_session.append(system_object)
-        new_session= new_session + self.session
-        task_list_object= self.plugin_list["GPTPlugin"].runprompt(extended_user_prompt, new_session,channel)
-        channel('debugmessage',{"message":f"Session Tokens (plugin selection): {task_list_object['session_tokens'] }"})  
-        if task_list_object['status']=='error':
-            channel('systemmessage',{"message":f"Error: {task_list_object['result'] }"})
-            return  []   
+        new_session = new_session + self.session
+        
+        # Run the prompt through the GPTPlugin to get the task list
+        task_list_object = self.plugin_list["GPTPlugin"].runprompt(extended_user_prompt, new_session, channel)
+        channel('debugmessage', {"message": f"Session Tokens (plugin selection): {task_list_object['session_tokens'] }"})  
+        
+        # Handle errors in the task list generation
+        if task_list_object['status'] == 'error':
+            channel('systemmessage', {"message": f"Error: {task_list_object['result'] }"})
+            return []   
         else:
-            # Clean tags from result  
+            # Clean tags from the result
             selected_plugin_string_clean = task_list_object['result'].replace("```plaintext", "").replace("```json", "").replace("```html", "").replace("```", "")  
             try:
+                # Parse the cleaned result into a JSON object
                 obj = json.loads(selected_plugin_string_clean) 
                 return obj
             except:
-                channel('systemmessage',{"message":f"Error: {'Error Decomposing. Running User Prompt with GPT Plugin' }"})
-                obj=[{"plugin_name":"GPTPlugin","capability_name":"runprompt","task":prompt}]
+                # Handle JSON parsing errors by defaulting to using the GPTPlugin
+                channel('systemmessage', {"message": f"Error: {'Error Decomposing. Running User Prompt with GPT Plugin' }"})
+                obj = [{"plugin_name": "GPTPlugin", "capability_name": "runprompt", "task": prompt}]
                 return obj
     def get_plugin(self, plugin_id):  
         """  
