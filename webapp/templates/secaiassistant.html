@@ -3,113 +3,96 @@
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>SEC AI Assistant</title>  
+    <title>SECBOT - AI Assistant</title> 
+    <meta name="description" content="SECBOT - Is a Python-based AI assistant designed to interact with Security Solutions">
+    <meta name="keywords" content="SECBOT, AI Assistant, Chatbot, AI, Assistant, Chat, GPT, OpenAI, SEC, SECAI, SEC AI Assistant, Python Security Assistant, Python Security Assistant, Python Security Assistant">
+    <meta name="author" content="Jaime Guimera Coll">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://secbot.ai">
+    <meta property="og:title" content="SECBOT - AI Assistant">
+    <meta property="og:description" content="SECBOT - AI Assistant">
+    <meta property="og:image" content="https://secbot.ai/static/secbot-logo.svg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://secbot.ai">
+    <meta property="twitter:title" content="SECBOT - AI Assistant">
+    <meta property="twitter:description" content="SECBOT - AI Assistant">
+    <meta property="twitter:image" content="https://secbot.ai/static/secbot-logo.svg">
+    
+    <link rel="canonical" href="https://secbot.ai">   
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/favicon-16x16.png">
+    <link rel="manifest" href="../static/site.webmanifest">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <style>  
         body {  
-            font-family: Arial, sans-serif;  
+            font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;  
             background-color: #f4f4f9;  
-            display: flex;  
-            justify-content: center;  
-            align-items: center;  
-            height: 100vh;  
             margin: 0;  
         }  
-        #chat-container {  
-            min-height: 400px;  
-            max-height: 90%;  
-            width: 60%;  
-            background-color: #fff;  
-            border-radius: 8px;  
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
-            overflow: hidden;  
-            display: flex;  
-            flex-direction: column;  
-            position: relative;  
-        }  
+ 
         #logo {  
             padding: 10px;  
             text-align: center;  
-        }  
-        #messages {  
-            padding: 10px;  
-            height: 60%;  
-            overflow-y: scroll;  
-            border-bottom: 1px solid #ddd;  
-            flex: 1;  
-        }  
-        .message {  
-            margin-bottom: 15px;  
-        }  
-        .message span {  
-            display: inline-block;  
-        }  
-        .user {  
-            text-align: right;  
+        }
 
+        /** Messages **/
+        #chat-container {
+            overflow: hidden;
+            position: relative;  
         } 
-        .user span{  
 
-            background-color: darkslateblue;  
-            border-radius: 4px;  
-            color: #f4f4f4;
-            padding: 2px;
-        } 
-        .debug {  
-            text-align: right;  
+        /** Body Copy Font **/
+        h1 {
+            font-size: 2.25rem !important;
+            line-height: 2.5rem !important;
+            font-weight: 700 !important;
+            margin-bottom: .5rem !important;
+        }
+        h2 {
+            font-size: 1.5rem !important;
+            line-height: 2rem !important;
+            font-weight: 700 !important;
+            margin-bottom: .5rem !important;
+        }
+        h3 {
+            font-size: 1.25rem !important;
+            line-height: 1.75rem !important;
+            font-weight: 700 !important;
+            margin-bottom: .5rem !important;
+        }
+        h4 {
+            font-size: 1rem !important;
+            line-height: 1.5rem !important;
+            font-weight: 700 !important;
+            margin-bottom: .5rem !important;
+        }
+        p {
+            font-size: .875rem !important;
+            line-height: 1.25rem !important;
+            margin-bottom: .5rem !important;
+            font-weight: normal;
+        }
+        ul {
+            font-size: .875rem;
+            line-height: 1.25rem;
+            list-style-type: disc;
+            margin-left: 1.25rem;
+            margin-bottom: .5rem !important;
+        }
+        li {
+            margin-bottom: .5rem !important;
+        }
 
-        } 
-        .debug span{  
-
-            background-color: rgb(179, 178, 184);  
-            border-radius: 4px;  
-            color: #070606;
-            padding: 2px;
-            font-size: small;
-        } 
-        .bot {  
-            text-align: left;  
-        }  
-        .bot span{  
-            background-color:rgb(188 216 234);
-            border-radius: 4px;  
-            color: #070606;
-            padding: 5px;
-        } 
-        #input-container {  
-            display: flex;  
-            border-top: 1px solid #ddd;  
-        }  
-        #input {  
-            flex: 1;  
-            padding: 10px;  
-            border: none;  
-            border-right: 1px solid #ddd;  
-        }  
-        #send, #clear, #toggle-debug {  
-            padding: 10px;  
-            background-color: #007bff;  
-            color: white;  
-            border: none;  
-            cursor: pointer;  
-        }  
-        #toggle-debug {  
-              
-            background-color: #216104;  
-                    }
-        #clear {  
-            background-color: #dc3545;  
-        }  
-        #loading-message {  
-            text-align: center;  
-            color: #888;  
-            display: none;  
-            vertical-align: super;
-        }  
+        /** Debug Panel **/
         #debug-panel {  
-            width: 500px;  
-            height: 100%;  
-            background-color: #f4f4f4;  
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);  
             overflow-y: scroll;  
             transition: transform 0.3s;  
             transform: translateX(100%);  
@@ -117,94 +100,113 @@
             top: 0;  
             right: 0;  
             white-space: pre-wrap;
-            font-size: small;
         }  
         #debug-panel.visible {  
             transform: translateX(0);  
         }  
-        #debug-panel {  
-            padding: 10px;  
-        } 
         #debug-messages div {  
-            padding: 10px;  
+            width: 100%;
+            border-radius: 0.75rem;
+            background-color: rgb(55 65 81);
+            color: white;
+            padding: 0.5rem;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            margin-bottom: 1rem;
+            --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
         }  
-        tbody tr.active-row {
-            font-weight: bold;
-            color: #009879;
-        }
-        tbody tr:last-of-type {
-            border-bottom: 2px solid #009879;
+
+        /** Tables **/
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            unicode-bidi: isolate;
+            border-color: inherit;
         }
         tbody tr {
-            border-bottom: 1px solid #dddddd;
+            
+            background-color: transparent;
         }
-
-        tbody tr:nth-of-type(even) {
-            background-color: #f3f3f3;
+        tbody tr.active-row {
+            background-color: rgba(0 0 0, 0.3);
         }
         th,td {
             padding: 12px 15px;
         }
-
         thead tr {
-            background-color: #009879;
-            color: #ffffff;
+            background-color: rgba(0 0 0/ .5);
+            color: white; 
             text-align: left;
+            text-transform: uppercase;
+            font-size: .75rem;
+            line-height: 1rem;
+        }
+        thead th {
+            padding: .75rem;
         }
         table {
+            border-radius: .5rem;
+            overflow: hidden;
             border-collapse: collapse;
-            margin: 25px 0;
-            font-size: 0.9em;
-            font-family: sans-serif;
-            min-width: 400px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            border-color: inherit;
+            text-indent: 0;
+            font-size: .875rem;
+            line-height: 1.25rem;
+            color: black;
+            margin-bottom: .5rem !important;
+        }
+        td {
+            background-color: #f3f3f3;
+            padding: .75rem;
         }
 
-        /* HTML: <div class="loader"></div> */
-/* HTML: <div class="loader"></div> */
-.loader {
-    display: inline-grid;
-  height: 30px;
-  aspect-ratio: 2.5;
-  --_g: no-repeat radial-gradient(farthest-side,#000 90%,#0000);
-  background: var(--_g), var(--_g), var(--_g), var(--_g);
-  background-size: 20% 50%;
-  animation: l44 1s infinite linear alternate; 
-}
-@keyframes l44 {
-  0%,
-  5%    {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
-  12.5% {background-position: calc(0*100%/3) 0   ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
-  25%   {background-position: calc(0*100%/3) 0   ,calc(1*100%/3) 0   ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
-  37.5% {background-position: calc(0*100%/3) 100%,calc(1*100%/3) 0   ,calc(2*100%/3) 0   ,calc(3*100%/3) 50% }
-  50%   {background-position: calc(0*100%/3) 100%,calc(1*100%/3) 100%,calc(2*100%/3) 0   ,calc(3*100%/3) 0   }
-  62.5% {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 100%,calc(2*100%/3) 100%,calc(3*100%/3) 0   }
-  75%   {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 100%,calc(3*100%/3) 100%}
-  87.5% {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 100%}
-  95%,
-  100%  {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
-}
-
+        /** Loading spinner **/
+        #loading-message {
+            position: absolute;
+            left: 10px;
+            bottom: 6%;
+        }
+        #loading-message[data-open="true"] {
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #loading-message[data-open="false"] {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
     </style>  
 </head>  
-<body>  
-    <div id="chat-container">  
-        <div id="logo">  
-            <img src="/static/logo.png" alt="Logo" height="60">  
-        </div>  
-        <div id="messages"></div>  
-        <div id="loading-message"><span></span><div class="loader"></div>  </div>  
-        <div id="input-container">  
-            <input type="text" id="input" placeholder="Enter your prompt..." />  
-            <button id="send">Send</button>  
-            <button id="clear">Clear</button>  
-            <button id="toggle-debug">Show Debug</button>  
-        </div>  
-        <div id="debug-panel">  
-            <div id="debug-messages"></div>  
-        </div>  
-    </div>  
-  
+<body> 
+    <div class="flex flex-row min-h-screen justify-center sm:items-center sm:py-10">
+        <div class="w-full relative bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:rounded-lg sm:ml-10 sm:mr-10 sm:px-10 flex flex-col h-[calc(100dvh-5rem)]">
+            <div class="flex justify-between">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8" viewBox="0 0 430 106"><defs><clipPath id="a"><path d="M-17.69-11.11H92v129.23H-17.69z" style="fill:none"/></clipPath></defs><g style="clip-path:url(#a)"><path d="M57.65 28.44v-6.7c0-10.88-8.82-19.7-19.7-19.7-10.88 0-19.7 8.82-19.7 19.7v6.48C8.74 34.55 2.47 45.36 2.47 57.64c0 19.5 15.81 35.31 35.31 35.31h.38v9.99c16.73-4.57 29.73-18.15 33.47-35.21.95-3.2 1.47-6.58 1.47-10.09 0-12.14-6.13-22.84-15.45-29.2ZM44.17 69.28H31.4l2.15-9.67a8.262 8.262 0 0 1 4.61-15.12c4.56 0 8.26 3.7 8.26 8.26 0 3.24-1.87 6.04-4.58 7.39l2.33 9.14Zm8.26-43.77c-4.46-2.04-9.42-3.18-14.65-3.18s-9.95 1.09-14.32 3.04V21.6c0-7.53 6.11-13.64 13.64-13.64h1.69c7.53 0 13.64 6.11 13.64 13.64v3.92Z" style="fill:#4f46e5"/></g><path d="M98.17 80.62c-3.33-3.2-4.12-7.88-2.37-14.06h19.02c-.86 3.28.03 4.92 2.66 4.92.97 0 1.86-.23 2.69-.69.83-.46 1.41-1.17 1.74-2.13.46-1.34.11-2.43-1.05-3.26-1.16-.83-3.09-1.79-5.79-2.86-3.21-1.29-5.8-2.55-7.76-3.79-1.97-1.24-3.4-3.03-4.31-5.4-.91-2.36-.69-5.4.64-9.11 1.28-3.71 3.32-6.86 6.12-9.47 2.8-2.61 6.09-4.58 9.86-5.92 3.77-1.34 7.72-2.02 11.86-2.02 6.98 0 11.98 1.61 14.98 4.84 3 3.22 3.6 7.77 1.8 13.62H129c.5-1.61.5-2.77-.02-3.47-.51-.7-1.31-1.05-2.38-1.05-.75 0-1.46.26-2.12.77-.66.51-1.15 1.22-1.46 2.14-.44 1.29-.1 2.35 1.04 3.18 1.14.83 3.06 1.84 5.77 3.02 3.14 1.34 5.66 2.63 7.58 3.87 1.91 1.24 3.35 2.96 4.31 5.16.96 2.2.87 4.97-.28 8.3-1.2 3.49-3.14 6.62-5.81 9.39-2.67 2.77-5.92 4.93-9.73 6.49s-7.98 2.34-12.49 2.34c-6.82 0-11.9-1.6-15.23-4.8ZM174.28 42.05l-2.42 7.01h17.73l-4.63 13.46h-17.73l-2.78 8.06h20.15l-4.91 14.27h-38.04l19.65-57.07h38.04l-4.91 14.27h-20.15ZM203.32 41.16c3.8-4.41 8.24-7.83 13.33-10.28 5.09-2.45 10.5-3.67 16.25-3.67 4.94 0 9.04.93 12.3 2.78 3.26 1.85 5.52 4.47 6.81 7.86 1.28 3.39 1.54 7.33.8 11.85h-18.86c-.21-1.88-.93-3.34-2.15-4.39-1.23-1.05-2.86-1.57-4.9-1.57-3.01 0-5.78 1.13-8.3 3.38-2.52 2.26-4.44 5.29-5.76 9.11-1.31 3.82-1.49 6.85-.52 9.11s2.96 3.39 5.97 3.39c2.04 0 4.04-.52 5.98-1.57 1.95-1.05 3.67-2.51 5.18-4.39h18.86c-2.36 4.51-5.35 8.46-8.96 11.85-3.61 3.38-7.68 6-12.22 7.86a37.26 37.26 0 0 1-14.22 2.78c-5.75 0-10.33-1.22-13.73-3.67-3.4-2.45-5.49-5.87-6.25-10.28s-.18-9.43 1.76-15.07c1.94-5.64 4.81-10.67 8.62-15.07Z" style="fill:#4f46e5"/><path d="M300.69 60.55c1.05 2.5 1.01 5.39-.12 8.67-1.72 5-4.7 8.85-8.94 11.57-4.24 2.71-9.45 4.07-15.63 4.07h-29.9l19.65-57.07h29.1c5.8 0 9.93 1.26 12.4 3.79 2.46 2.53 2.86 6.21 1.2 11.04-1.15 3.33-2.99 6.14-5.52 8.42-2.53 2.28-5.38 3.8-8.54 4.55 3.16.81 5.27 2.46 6.31 4.96Zm-19.71 9.03c.99-.62 1.73-1.62 2.21-3.02.94-2.74-.17-4.11-3.34-4.11h-8.14l-2.77 8.06h8.14c1.61 0 2.91-.31 3.91-.93Zm-5-19.55h6.93c1.61 0 2.92-.32 3.92-.97s1.73-1.64 2.2-2.98c.48-1.4.45-2.43-.1-3.1-.55-.67-1.63-1.01-3.24-1.01h-6.93l-2.78 8.06ZM315.36 81.62c-3.62-2.52-5.98-6.02-7.07-10.48-1.1-4.46-.68-9.48 1.24-15.07s4.97-10.61 9.14-15.07c4.17-4.46 8.93-7.94 14.28-10.44 5.35-2.5 10.71-3.75 16.08-3.75s9.86 1.25 13.46 3.75c3.6 2.5 5.93 5.98 7 10.44 1.07 4.46.64 9.48-1.28 15.07s-4.96 10.61-9.1 15.07c-4.14 4.46-8.89 7.95-14.25 10.48-5.36 2.53-10.7 3.79-16.01 3.79s-9.87-1.26-13.49-3.79Zm28.63-16.32c2.72-2.28 4.75-5.36 6.08-9.23 1.35-3.92 1.45-7.03.3-9.31-1.15-2.28-3.5-3.43-7.04-3.43s-6.76 1.14-9.48 3.43c-2.72 2.28-4.76 5.39-6.11 9.31-1.33 3.87-1.42 6.95-.28 9.23 1.15 2.28 3.52 3.42 7.12 3.42s6.68-1.14 9.4-3.42ZM429.21 27.78l-4.88 14.19h-15.15l-14.76 42.88h-17.89l14.76-42.88H376.3l4.88-14.19h48.04Z"/></svg>
+                <button id="toggle-debug" class="bg-zinc-300 text-gray-800 rounded-md transition-all font-medium 2xl:px-6 px-2 overflow-hidden text-xs">Show Debug</button> 
+            </div>
+            <div  id="chat-container" class="relative flex flex-col grow">
+                <div id="messages" class="bg-gray-100 p-5 sm:rounded-lg mt-3 mb-3 h-full overflow-y-auto"></div>  
+                <div id="loading-message" data-open="false">
+                    <div role="status">
+                        <svg aria-hidden="true" class="w-5 h-5 text-gray-200 animate-spin dark:text-gray-600 fill-indigo-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>    
+                <div id="debug-panel" class="bg-gray-300 p-5 sm:rounded-lg mt-3 mb-3 w-full flex grow h-[calc(100%-1.25rem)] overflow-y-auto justify-end">  
+                    <div id="debug-messages" class="flex flex-col"></div>  
+                </div>
+            </div>
+            <div id="input-container" class="border-t-2 border-gray-300/50 pt-3 flex">
+                <input type="text" name="input" id="input" class="block w-full rounded-l-md border-0 border-r-0 py-1.5 py-2 pl-5 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Enter your prompt...">
+                <button id="send" class="bg-indigo-600 text-white relative items-center justify-center rounded-r-md mr-2 transition-all font-medium 2xl:px-6 2xl:py-3.5 px-4 py-2 copy-body overflow-hidden inline-flex whitespace-nowrap text-sm">Send</button>
+                <button id="clear" class="border border-indigo-600 text-indigo-600 relative items-center justify-center rounded-md transition-all font-medium 2xl:px-6 2xl:py-3.5 px-3 py-2 copy-body overflow-hidden inline-flex whitespace-nowrap text-sm">Clear</button>
+            </div>
+        </div> 
+    </div>     
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>  
     <script>  
         const socket = io.connect(location.protocol+'//' + document.domain + ':' + location.port + '/secai');  
@@ -215,12 +217,30 @@
         const toggleDebugButton = document.getElementById('toggle-debug');  
         const loadingMessage = document.getElementById('loading-message');  
         const debugPanel = document.getElementById('debug-panel');  
-        const debugMessagesContainer = document.getElementById('debug-messages');  
+        const debugMessagesContainer = document.getElementById('debug-messages');
+
+        function getChatBoxStyle(variant) {
+            switch (variant) {
+                case 'bot':
+                    return 'bg-teal-600';
+                case 'debug':
+                    return 'bg-neutral-500';
+                default:
+                    return 'bg-indigo-600';
+            }
+        }
   
-        function addMessage(response, className) {  
-            const messageElement = document.createElement('div');  
-            messageElement.className = 'message ' + className;  
-            messageElement.innerHTML = `<span>${response}</span>`;  
+        function addMessage(response, variant) {  
+            const containerClassName = variant !== 'bot' ? 'flex justify-end' : 'flex justify-start';
+            const messageElement = document.createElement('div'); 
+            const chatBoxStyle = getChatBoxStyle(variant)
+            const messageElementTemplate = `
+                <div class="p-2 mb-1 ${chatBoxStyle} rounded-xl shadow-lg flex items-center gap-x-4 overflow-x-auto max-w-screen-lg lg:max-w-screen-xl text-sm text-white">                
+                    ${response}
+                </div>
+            ` 
+            messageElement.className = containerClassName;
+            messageElement.innerHTML = messageElementTemplate;  
             messagesContainer.appendChild(messageElement);  
             messagesContainer.scrollTop = messagesContainer.scrollHeight;  
         }  
@@ -233,14 +253,14 @@
                 inputField.value = '';  
                 showLoadingMessage();  
             }  
-        }  
-  
+        }
+
         function showLoadingMessage() {  
-            loadingMessage.style.display = 'block';  
+            loadingMessage.setAttribute('data-open', 'true');
         }  
   
         function hideLoadingMessage() {  
-            loadingMessage.style.display = 'none';  
+            loadingMessage.setAttribute('data-open', 'false');
         }  
   
         sendButton.addEventListener('click', handleUserInput);  
@@ -259,12 +279,18 @@
         });  
   
         toggleDebugButton.addEventListener('click', function() {  
-            debugPanel.classList.toggle('visible');  
+            debugPanel.classList.toggle('visible');
+            if (debugPanel.classList.contains('visible')) {
+                toggleDebugButton.textContent = 'Hide Debug';
+            } else {
+                toggleDebugButton.textContent = 'Show Debug';
+            }
         });  
   
         document.addEventListener('click', function(event) {  
             if (!debugPanel.contains(event.target) && !toggleDebugButton.contains(event.target)) {  
-                debugPanel.classList.remove('visible');  
+                debugPanel.classList.remove('visible');
+                toggleDebugButton.textContent = 'Show Debug';
             }  
         });  
         socket.on('completedmessage', function(message_object) {  
