@@ -16,5 +16,5 @@ class GPTPlugin(SECAIAssistantPlugin):
   
         :return: plugin capabilities object  
         """  
-        capabilities={'runprompt':"This capability allows run a prompt without retrieving any additional data. This plugin should be use if the user prompt doesn't require any additional or external data."}
+        capabilities={'runprompt':"This capability allows run a prompt without retrieving any additional external data. This plugin should be use if the user prompt doesn't require any additional or external data. THe main usage is to summarize current data or to generate new data based on the current context."}
         return  capabilities

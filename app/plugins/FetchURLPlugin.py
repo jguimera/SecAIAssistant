@@ -1,7 +1,8 @@
 from app.plugins.SECAIAssistantPlugin import SECAIAssistantPlugin  
 import requests  
+from requests.exceptions import MissingSchema
 from bs4 import BeautifulSoup  
-  
+ 
 class FetchURLPlugin(SECAIAssistantPlugin):  
     """  
     Plugin to fetch and process data from a URL.  
@@ -33,7 +34,7 @@ class FetchURLPlugin(SECAIAssistantPlugin):
   
         :return: plugin capabilities object  
         """  
-        capabilities={'fetchurl':"This capability retrieves data from external urls or site to be processed inside the session."}
+        capabilities={'fetchurl':"This capability retrieves data from external urls or site to be processed inside the session.It requires a valid URL in the prompt "}
         return  capabilities
     def clean_html(self, html_content):  
         """  
@@ -69,14 +70,16 @@ class FetchURLPlugin(SECAIAssistantPlugin):
         :param url: URL to fetch content from  
         :return: Cleaned text from the URL  
         """  
-        response = requests.get(url)  
-  
-        if response.status_code == 200:  
-            cleaned_text = self.clean_html(response.content)  
-            return cleaned_text  
-        else:  
-            return f"Failed to retrieve content. Status code: {response.status_code}" 
-  
+        try:    
+            response = requests.get(url)  
+
+            if response.status_code == 200:  
+                cleaned_text = self.clean_html(response.content)  
+                return cleaned_text  
+            else:  
+                return f"Failed to retrieve content. Status code: {response.status_code}" 
+        except MissingSchema as e:  
+            return f"Failed to retrieve content. URL couldn't be extracted from the prompt."  
     def runprompt(self, prompt, session,channel):  
         """  
         Extract the URL from the prompt and process it.  

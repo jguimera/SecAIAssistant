@@ -3,187 +3,54 @@
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>SECBOT - AI Assistant</title> 
-    <meta name="description" content="SECBOT - Is a Python-based AI assistant designed to interact with Security Solutions">
-    <meta name="keywords" content="SECBOT, AI Assistant, Chatbot, AI, Assistant, Chat, GPT, OpenAI, SEC, SECAI, SEC AI Assistant, Python Security Assistant, Python Security Assistant, Python Security Assistant">
+    <title>Teisec - CyberSec Agent</title> 
+    <meta name="description" content="Teisec - Is a Python-based CyberSec Agent designed to interact with Security Solutions">
+    <meta name="keywords" content="Teisec, CyberSec Agent,AI Assistant, Chatbot, AI, Assistant, Chat, GPT, OpenAI, SEC, SECAI, SEC AI Assistant, Python Security Assistant, Python Security Assistant, Python Security Assistant">
     <meta name="author" content="Jaime Guimera Coll">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://secbot.ai">
-    <meta property="og:title" content="SECBOT - AI Assistant">
-    <meta property="og:description" content="SECBOT - AI Assistant">
-    <meta property="og:image" content="https://secbot.ai/static/secbot-logo.svg">
+    <meta property="og:url" content="https://Teisec.com">
+    <meta property="og:title" content="Teisec - CyberSec Agent">
+    <meta property="og:description" content="Teisec - CyberSec Agent">
+    <meta property="og:image" content="https://Teisec.com/static/teisec-logo.svg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://secbot.ai">
-    <meta property="twitter:title" content="SECBOT - AI Assistant">
-    <meta property="twitter:description" content="SECBOT - AI Assistant">
-    <meta property="twitter:image" content="https://secbot.ai/static/secbot-logo.svg">
+    <meta property="twitter:url" content="https://Teisec.com">
+    <meta property="twitter:title" content="Teisec - CyberSec Agent">
+    <meta property="twitter:description" content="Teisec - CyberSec Agent">
+    <meta property="twitter:image" content="https://Teisec.com/static/Teisec-logo.svg">
     
-    <link rel="canonical" href="https://secbot.ai">   
+    <link rel="canonical" href="https://Teisec.com">   
     
     <link rel="apple-touch-icon" sizes="180x180" href="../static/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../static/favicon-16x16.png">
     <link rel="manifest" href="../static/site.webmanifest">
+    <link rel="stylesheet" href="../static/styles.css">
     
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-    <style>  
-        body {  
-            font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;  
-            background-color: #f4f4f9;  
-            margin: 0;  
-        }  
- 
-        #logo {  
-            padding: 10px;  
-            text-align: center;  
-        }
-
-        /** Messages **/
-        #chat-container {
-            overflow: hidden;
-            position: relative;  
-        } 
-
-        /** Body Copy Font **/
-        h1 {
-            font-size: 2.25rem !important;
-            line-height: 2.5rem !important;
-            font-weight: 700 !important;
-            margin-bottom: .5rem !important;
-        }
-        h2 {
-            font-size: 1.5rem !important;
-            line-height: 2rem !important;
-            font-weight: 700 !important;
-            margin-bottom: .5rem !important;
-        }
-        h3 {
-            font-size: 1.25rem !important;
-            line-height: 1.75rem !important;
-            font-weight: 700 !important;
-            margin-bottom: .5rem !important;
-        }
-        h4 {
-            font-size: 1rem !important;
-            line-height: 1.5rem !important;
-            font-weight: 700 !important;
-            margin-bottom: .5rem !important;
-        }
-        p {
-            font-size: .875rem !important;
-            line-height: 1.25rem !important;
-            margin-bottom: .5rem !important;
-            font-weight: normal;
-        }
-        ul {
-            font-size: .875rem;
-            line-height: 1.25rem;
-            list-style-type: disc;
-            margin-left: 1.25rem;
-            margin-bottom: .5rem !important;
-        }
-        li {
-            margin-bottom: .5rem !important;
-        }
-
-        /** Debug Panel **/
-        #debug-panel {  
-            overflow-y: scroll;  
-            transition: transform 0.3s;  
-            transform: translateX(100%);  
-            position: absolute;  
-            top: 0;  
-            right: 0;  
-            white-space: pre-wrap;
-        }  
-        #debug-panel.visible {  
-            transform: translateX(0);  
-        }  
-        #debug-messages div {  
-            width: 100%;
-            border-radius: 0.75rem;
-            background-color: rgb(55 65 81);
-            color: white;
-            padding: 0.5rem;
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-            margin-bottom: 1rem;
-            --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-        }  
-
-        /** Tables **/
-        tbody {
-            display: table-row-group;
-            vertical-align: middle;
-            unicode-bidi: isolate;
-            border-color: inherit;
-        }
-        tbody tr {
-            
-            background-color: transparent;
-        }
-        tbody tr.active-row {
-            background-color: rgba(0 0 0, 0.3);
-        }
-        th,td {
-            padding: 12px 15px;
-        }
-        thead tr {
-            background-color: rgba(0 0 0/ .5);
-            color: white; 
-            text-align: left;
-            text-transform: uppercase;
-            font-size: .75rem;
-            line-height: 1rem;
-        }
-        thead th {
-            padding: .75rem;
-        }
-        table {
-            border-radius: .5rem;
-            overflow: hidden;
-            border-collapse: collapse;
-            border-color: inherit;
-            text-indent: 0;
-            font-size: .875rem;
-            line-height: 1.25rem;
-            color: black;
-            margin-bottom: .5rem !important;
-        }
-        td {
-            background-color: #f3f3f3;
-            padding: .75rem;
-        }
-
-        /** Loading spinner **/
-        #loading-message {
-            position: absolute;
-            left: 10px;
-            bottom: 6%;
-        }
-        #loading-message[data-open="true"] {
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out;
-        }
-        #loading-message[data-open="false"] {
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-    </style>  
 </head>  
 <body> 
     <div class="flex flex-row min-h-screen justify-center sm:items-center sm:py-10">
         <div class="w-full relative bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:rounded-lg sm:ml-10 sm:mr-10 sm:px-10 flex flex-col h-[calc(100dvh-5rem)]">
             <div class="flex justify-between">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8" viewBox="0 0 430 106"><defs><clipPath id="a"><path d="M-17.69-11.11H92v129.23H-17.69z" style="fill:none"/></clipPath></defs><g style="clip-path:url(#a)"><path d="M57.65 28.44v-6.7c0-10.88-8.82-19.7-19.7-19.7-10.88 0-19.7 8.82-19.7 19.7v6.48C8.74 34.55 2.47 45.36 2.47 57.64c0 19.5 15.81 35.31 35.31 35.31h.38v9.99c16.73-4.57 29.73-18.15 33.47-35.21.95-3.2 1.47-6.58 1.47-10.09 0-12.14-6.13-22.84-15.45-29.2ZM44.17 69.28H31.4l2.15-9.67a8.262 8.262 0 0 1 4.61-15.12c4.56 0 8.26 3.7 8.26 8.26 0 3.24-1.87 6.04-4.58 7.39l2.33 9.14Zm8.26-43.77c-4.46-2.04-9.42-3.18-14.65-3.18s-9.95 1.09-14.32 3.04V21.6c0-7.53 6.11-13.64 13.64-13.64h1.69c7.53 0 13.64 6.11 13.64 13.64v3.92Z" style="fill:#4f46e5"/></g><path d="M98.17 80.62c-3.33-3.2-4.12-7.88-2.37-14.06h19.02c-.86 3.28.03 4.92 2.66 4.92.97 0 1.86-.23 2.69-.69.83-.46 1.41-1.17 1.74-2.13.46-1.34.11-2.43-1.05-3.26-1.16-.83-3.09-1.79-5.79-2.86-3.21-1.29-5.8-2.55-7.76-3.79-1.97-1.24-3.4-3.03-4.31-5.4-.91-2.36-.69-5.4.64-9.11 1.28-3.71 3.32-6.86 6.12-9.47 2.8-2.61 6.09-4.58 9.86-5.92 3.77-1.34 7.72-2.02 11.86-2.02 6.98 0 11.98 1.61 14.98 4.84 3 3.22 3.6 7.77 1.8 13.62H129c.5-1.61.5-2.77-.02-3.47-.51-.7-1.31-1.05-2.38-1.05-.75 0-1.46.26-2.12.77-.66.51-1.15 1.22-1.46 2.14-.44 1.29-.1 2.35 1.04 3.18 1.14.83 3.06 1.84 5.77 3.02 3.14 1.34 5.66 2.63 7.58 3.87 1.91 1.24 3.35 2.96 4.31 5.16.96 2.2.87 4.97-.28 8.3-1.2 3.49-3.14 6.62-5.81 9.39-2.67 2.77-5.92 4.93-9.73 6.49s-7.98 2.34-12.49 2.34c-6.82 0-11.9-1.6-15.23-4.8ZM174.28 42.05l-2.42 7.01h17.73l-4.63 13.46h-17.73l-2.78 8.06h20.15l-4.91 14.27h-38.04l19.65-57.07h38.04l-4.91 14.27h-20.15ZM203.32 41.16c3.8-4.41 8.24-7.83 13.33-10.28 5.09-2.45 10.5-3.67 16.25-3.67 4.94 0 9.04.93 12.3 2.78 3.26 1.85 5.52 4.47 6.81 7.86 1.28 3.39 1.54 7.33.8 11.85h-18.86c-.21-1.88-.93-3.34-2.15-4.39-1.23-1.05-2.86-1.57-4.9-1.57-3.01 0-5.78 1.13-8.3 3.38-2.52 2.26-4.44 5.29-5.76 9.11-1.31 3.82-1.49 6.85-.52 9.11s2.96 3.39 5.97 3.39c2.04 0 4.04-.52 5.98-1.57 1.95-1.05 3.67-2.51 5.18-4.39h18.86c-2.36 4.51-5.35 8.46-8.96 11.85-3.61 3.38-7.68 6-12.22 7.86a37.26 37.26 0 0 1-14.22 2.78c-5.75 0-10.33-1.22-13.73-3.67-3.4-2.45-5.49-5.87-6.25-10.28s-.18-9.43 1.76-15.07c1.94-5.64 4.81-10.67 8.62-15.07Z" style="fill:#4f46e5"/><path d="M300.69 60.55c1.05 2.5 1.01 5.39-.12 8.67-1.72 5-4.7 8.85-8.94 11.57-4.24 2.71-9.45 4.07-15.63 4.07h-29.9l19.65-57.07h29.1c5.8 0 9.93 1.26 12.4 3.79 2.46 2.53 2.86 6.21 1.2 11.04-1.15 3.33-2.99 6.14-5.52 8.42-2.53 2.28-5.38 3.8-8.54 4.55 3.16.81 5.27 2.46 6.31 4.96Zm-19.71 9.03c.99-.62 1.73-1.62 2.21-3.02.94-2.74-.17-4.11-3.34-4.11h-8.14l-2.77 8.06h8.14c1.61 0 2.91-.31 3.91-.93Zm-5-19.55h6.93c1.61 0 2.92-.32 3.92-.97s1.73-1.64 2.2-2.98c.48-1.4.45-2.43-.1-3.1-.55-.67-1.63-1.01-3.24-1.01h-6.93l-2.78 8.06ZM315.36 81.62c-3.62-2.52-5.98-6.02-7.07-10.48-1.1-4.46-.68-9.48 1.24-15.07s4.97-10.61 9.14-15.07c4.17-4.46 8.93-7.94 14.28-10.44 5.35-2.5 10.71-3.75 16.08-3.75s9.86 1.25 13.46 3.75c3.6 2.5 5.93 5.98 7 10.44 1.07 4.46.64 9.48-1.28 15.07s-4.96 10.61-9.1 15.07c-4.14 4.46-8.89 7.95-14.25 10.48-5.36 2.53-10.7 3.79-16.01 3.79s-9.87-1.26-13.49-3.79Zm28.63-16.32c2.72-2.28 4.75-5.36 6.08-9.23 1.35-3.92 1.45-7.03.3-9.31-1.15-2.28-3.5-3.43-7.04-3.43s-6.76 1.14-9.48 3.43c-2.72 2.28-4.76 5.39-6.11 9.31-1.33 3.87-1.42 6.95-.28 9.23 1.15 2.28 3.52 3.42 7.12 3.42s6.68-1.14 9.4-3.42ZM429.21 27.78l-4.88 14.19h-15.15l-14.76 42.88h-17.89l14.76-42.88H376.3l4.88-14.19h48.04Z"/></svg>
-                <button id="toggle-debug" class="bg-zinc-300 text-gray-800 rounded-md transition-all font-medium 2xl:px-6 px-2 overflow-hidden text-xs">Show Debug</button> 
+                <svg width="315" height="50" xmlns="http://www.w3.org/2000/svg" data-version="1" data-id="lg_ggm3ag2Got9poIaXiZ" xml:space="preserve">
+
+                    <g>
+                     <title>Layer 1</title>
+                     <g stroke="null" id="svg_1" data-padding="20">
+                      <g stroke="null" id="svg_2" transform="translate(10 1.32) scale(0.97436 0.97436)">
+                       <rect stroke="null" id="svg_3" fill="none" y="-5.39187" x="-8.21009" height="55.3065" width="331.54145"/>
+                       <path stroke="null" id="svg_4" d="m28.42949,4.4695l0,10.2782q-6.07401,-0.24741 -11.79948,-0.29581l0,25.54759l-9.66996,0l0,-25.54759q-5.75947,0.04841 -11.75697,0.29581l0,-10.2782l33.2264,0zm12.22028,21.48149l0,5.09338q14.69834,-0.09681 21.31642,-0.53784q-0.27203,2.00616 -0.33154,4.13602q-0.05526,2.12986 -0.05526,5.35693l-30.05551,0q0.31029,-9.49295 0.31029,-17.76499t-0.31029,-17.76499l30.05551,0l0,8.85829l-20.92962,0l0,4.69538q1.85748,0.04841 5.49594,0.04841q6.15052,0 12.72609,-0.29044l0,8.41726q-6.57557,-0.29581 -12.72609,-0.29581q-3.63845,0 -5.49594,0.04841m46.87911,-21.48149l0,9.73498q-4.60333,-0.29044 -6.80935,-0.33884l0,16.73771q2.24428,-0.04841 6.80935,-0.34422l0,9.74036l-22.47256,0l0,-9.74036q4.44606,0.29581 6.76685,0.34422l0,-16.73771q-2.32079,0.04841 -6.76685,0.33884l0,-9.73498l22.47256,0zm3.09864,31.31866q1.31341,-2.50097 2.18477,-4.65235t1.68321,-4.99119q2.74584,2.00616 6.38005,3.13025q3.63845,1.12947 6.7711,1.12947q3.20915,0 4.52257,-0.70995q1.31766,-0.70995 1.31766,-1.54361q0,-2.98503 -7.19615,-2.98503q-7.88899,0 -11.44668,-2.08146q-3.56195,-2.08146 -3.56195,-6.72843q0,-6.6101 4.33554,-9.74036q4.33129,-3.13025 11.25541,-3.13025q4.021,0 8.25878,1.2962q4.23353,1.2962 7.6382,3.54439q-1.12214,3.23244 -2.35904,7.88479q-0.23378,0.97888 -0.3868,1.46831q-1.97225,-2.01154 -5.95925,-3.35615q-3.98275,-1.34461 -7.03888,-1.34461q-3.67246,0 -4.95187,0.61314q-1.27516,0.60776 -1.27516,1.78564q0,1.1725 1.75972,1.88245t5.08789,0.70995q8.19928,0 11.91424,2.37727q3.71071,2.37189 3.71071,7.26627q0,6.85213 -3.94449,9.86406q-3.94449,3.00655 -11.95249,3.00655q-4.29304,0 -8.74334,-1.19939q-4.44606,-1.19939 -8.00375,-3.49599m44.86861,-9.83717l0,5.09338q14.69834,-0.09681 21.31216,-0.53784q-0.27203,2.00616 -0.33154,4.13602q-0.05526,2.12986 -0.05526,5.35693l-30.05551,0q0.31029,-9.49295 0.31029,-17.76499t-0.31029,-17.76499l30.05551,0l0,8.85829l-20.92537,0l0,4.69538q1.85323,0.04841 5.49169,0.04841q6.15052,0 12.72609,-0.29044l0,8.41726q-6.57557,-0.29581 -12.72609,-0.29581q-3.63845,0 -5.49169,0.04841m41.42568,14.53255q-8.74334,0 -12.87911,-4.69538q-4.14002,-4.70076 -4.14002,-13.41383q0,-8.76148 4.14002,-13.84948q4.13577,-5.09338 12.87911,-5.09338q12.22028,0 16.3603,10.62242q-3.48119,1.51672 -8.16102,4.55016q-1.12214,-2.73763 -3.54069,-4.06072q-2.4143,-1.3231 -4.93062,-1.3231q-3.71071,0 -5.52994,2.47408t-1.81923,6.09377q0,3.9155 1.95524,6.38959q1.95099,2.4687 5.97625,2.4687q3.20915,0 5.10489,-1.34461t2.7841,-4.28124q3.1709,2.15138 8.12277,4.8406q-1.93399,5.92704 -6.46081,8.27204q-4.52257,2.35038 -9.86123,2.35038m61.61145,-0.48406l-10.0185,0q-0.73534,-2.79141 -1.97225,-6.99735l-12.33929,0l-1.93399,6.99735l-9.70821,0l10.83035,-35.52998l14.23503,0l10.90686,35.52998zm-22.12402,-14.63474l7.92724,0q-1.46643,-5.13641 -3.01363,-10.2782l-0.93087,-3.17866q-1.35167,4.45335 -3.98275,13.45686m46.64533,-20.89524l0,9.73498q-4.59907,-0.29044 -6.8051,-0.33884l0,16.73771q2.24428,-0.04841 6.8051,-0.34422l0,9.74036l-22.47256,0l0,-9.74036q4.45031,0.29581 6.7711,0.34422l0,-16.73771q-2.32079,0.04841 -6.7711,0.33884l0,-9.73498l22.47256,0z" fill="#7819cb"/>
+                      </g>
+                      <path stroke="transparent" id="svg_5" d="m-8.00002,70l231.22891,0l0,-19.90023l-231.22891,0l0,19.90023z" fill="transparent"/>
+                     </g>
+                    </g>
+                   </svg>
+                   <button id="toggle-debug" class="bg-zinc-300 text-gray-800 rounded-md transition-all font-medium 2xl:px-6 px-2 overflow-hidden text-xs">Show Debug</button> 
             </div>
             <div  id="chat-container" class="relative flex flex-col grow">
                 <div id="messages" class="bg-gray-100 p-5 sm:rounded-lg mt-3 mb-3 h-full overflow-y-auto"></div>  
@@ -222,11 +89,11 @@
         function getChatBoxStyle(variant) {
             switch (variant) {
                 case 'bot':
-                    return 'bg-teal-600';
+                    return 'text-sm bg-indigo-300 text-black';
                 case 'debug':
-                    return 'bg-neutral-500';
+                    return 'text-xs bg-neutral-300 text-black';
                 default:
-                    return 'bg-indigo-600';
+                    return 'text-sm bg-lime-600';
             }
         }
   
@@ -235,7 +102,7 @@
             const messageElement = document.createElement('div'); 
             const chatBoxStyle = getChatBoxStyle(variant)
             const messageElementTemplate = `
-                <div class="p-2 mb-1 ${chatBoxStyle} rounded-xl shadow-lg flex items-center gap-x-4 overflow-x-auto max-w-screen-lg lg:max-w-screen-xl text-sm text-white">                
+                <div class="p-2 mb-1 ${chatBoxStyle} rounded-xl shadow-lg flex items-center gap-x-4 overflow-x-auto max-w-screen-lg lg:max-w-screen-xl  text-white">                
                     ${response}
                 </div>
             ` 

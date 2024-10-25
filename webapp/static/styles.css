@@ -1,0 +1,144 @@
+body {  
+    font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;  
+    background-color: #f4f4f9;  
+    margin: 0;  
+}  
+
+#logo {  
+    padding: 10px;  
+    text-align: center;  
+}
+
+/** Messages **/
+#chat-container {
+    overflow: hidden;
+    position: relative;  
+} 
+
+/** Body Copy Font **/
+h1 {
+    font-size: 2.25rem !important;
+    line-height: 2.5rem !important;
+    font-weight: 700 !important;
+    margin-bottom: .5rem !important;
+}
+h2 {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+    font-weight: 700 !important;
+    margin-bottom: .5rem !important;
+}
+h3 {
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+    font-weight: 700 !important;
+    margin-bottom: .5rem !important;
+}
+h4 {
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+    font-weight: 700 !important;
+    margin-bottom: .5rem !important;
+}
+p {
+    font-size: .875rem !important;
+    line-height: 1.25rem !important;
+    margin-bottom: .5rem !important;
+    font-weight: normal;
+}
+ul {
+    font-size: .875rem;
+    line-height: 1.25rem;
+    list-style-type: disc;
+    margin-left: 1.25rem;
+    margin-bottom: .5rem !important;
+}
+li {
+    margin-bottom: .5rem !important;
+}
+
+/** Debug Panel **/
+#debug-panel {  
+    overflow-y: scroll;  
+    transition: transform 0.3s;  
+    transform: translateX(100%);  
+    position: absolute;  
+    top: 0;  
+    right: 0;  
+    white-space: pre-wrap;
+}  
+#debug-panel.visible {  
+    transform: translateX(0);  
+}  
+#debug-messages div {  
+    width: 100%;
+    border-radius: 0.75rem;
+    background-color: rgb(55 65 81);
+    color: white;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-bottom: 1rem;
+    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+--tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}  
+
+/** Tables **/
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+tbody tr {
+    
+    background-color: transparent;
+}
+tbody tr.active-row {
+    background-color: rgba(0 0 0, 0.3);
+}
+th,td {
+    padding: 12px 15px;
+}
+thead tr {
+    background-color: rgba(0 0 0/ .5);
+    color: white; 
+    text-align: left;
+    text-transform: uppercase;
+    font-size: .75rem;
+    line-height: 1rem;
+}
+thead th {
+    padding: .75rem;
+}
+table {
+    border-radius: .5rem;
+    overflow: hidden;
+    border-collapse: collapse;
+    border-color: inherit;
+    text-indent: 0;
+    font-size: .875rem;
+    line-height: 1.25rem;
+    color: black;
+    margin-bottom: .5rem !important;
+}
+td {
+    background-color: #f3f3f3;
+    padding: .75rem;
+}
+
+/** Loading spinner **/
+#loading-message {
+    position: absolute;
+    left: 10px;
+    bottom: 6%;
+}
+#loading-message[data-open="true"] {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+#loading-message[data-open="false"] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
