@@ -1,5 +1,5 @@
-from app.plugins.SECAIAssistantPlugin import SECAIAssistantPlugin
-class GPTPlugin(SECAIAssistantPlugin):
+from app.plugins.TeisecAgentPlugin import TeisecAgentPlugin
+class GPTPlugin(TeisecAgentPlugin):
     def __init__(self, name, description,plugintype,azureOpenAIClient):
         super().__init__(name, description,plugintype)
         self.azureOpenAIClient=azureOpenAIClient

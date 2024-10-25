@@ -163,16 +163,14 @@ class TeisecAgent:
         Print the introductory message for the assistant.  
         """  
         message = """
-   _____ ______ _____            _____                    _     _              _   
-  / ____|  ____/ ____|     /\   |_   _|     /\           (_)   | |            | |  
- | (___ | |__ | |         /  \    | |      /  \   ___ ___ _ ___| |_ __ _ _ __ | |_ 
-  \___ \|  __|| |        / /\ \   | |     / /\ \ / __/ __| / __| __/ _` | '_ \| __|
-  ____) | |___| |____   / ____ \ _| |_   / ____ \\__ \__ \ \__ \ || (_| | | | | |_ 
- |_____/|______\_____| /_/    \_\_____| /_/    \_\___/___/_|___/\__\__,_|_| |_|\__|
-                                                                                   
+
+╔╦╗╔═╗╦╔═╗╔═╗╔═╗  ╔═╗╔═╗╔═╗╔╗╔╔╦╗
+ ║ ║╣ ║╚═╗║╣ ║    ╠═╣║ ╦║╣ ║║║ ║ 
+ ╩ ╚═╝╩╚═╝╚═╝╚═╝  ╩ ╩╚═╝╚═╝╝╚╝ ╩ 
+                                                                         
             """ 
         print(f"{Fore.GREEN}{message}{Fore.WHITE}")  
-        print_info("Welcome to SEC AI Assistant")  
+        print_info("Welcome to Teisec Agent")  
   
     def process_response(self, output_type, user_input, response,channel):  
         """  

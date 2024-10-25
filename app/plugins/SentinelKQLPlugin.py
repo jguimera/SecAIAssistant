@@ -1,10 +1,10 @@
-from app.plugins.SECAIAssistantPlugin import SECAIAssistantPlugin  
+from app.plugins.TeisecAgentPlugin import TeisecAgentPlugin  
 from colorama import Fore  
 import json  
 import os  
 from app.HelperFunctions import print_plugin_debug  
   
-class SentinelKQLPlugin(SECAIAssistantPlugin):  
+class SentinelKQLPlugin(TeisecAgentPlugin):  
     """  
     Plugin to generate and run KQL queries adhering to the Sentinel schema.  
     """  
