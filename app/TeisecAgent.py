@@ -9,7 +9,7 @@ from colorama import Fore
 from app.HelperFunctions import *  
 import json 
 import time  
-class SecAIAssistant:  
+class TeisecAgent:  
     def __init__(self, auth_type):  
         self.client_list = {}  
         self.plugin_list = {} 

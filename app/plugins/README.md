@@ -1,12 +1,12 @@
-# SEC AI Assistant Plugin System  
+# Teisec Agent Plugin System  
   
 ## Overview  
   
-This SEC AI Assistant is designed with a plugin-based architecture, allowing it to extend its functionality through various plugins. Each plugin focuses on a specific task and can be easily added or modified. This document provides an overview of the existing plugins and guidelines for creating new ones.  
+This Teisec Agent is designed with a plugin-based architecture, allowing it to extend its functionality through various plugins. Each plugin focuses on a specific task and can be easily added or modified. This document provides an overview of the existing plugins and guidelines for creating new ones.  
   
 ## Existing Plugins  
   
-### SECAIAssistantPlugin  
+### TeisecAgentPlugin  
   
 This is the base class for all plugins. It includes basic methods that can be overridden by derived classes.  
   
@@ -65,8 +65,8 @@ This plugin retrieves and processes data from a URL.
 To create a new plugin, follow these steps:  
   
 1. **Create a New Plugin File**: Create a new Python file for your plugin in the `plugins` directory.  
-2. **Import the Base Class**: Import the `SECAIAssistantPlugin` class from `SECAIAssistantPlugin.py`.  
-3. **Define the Plugin Class**: Define your plugin class and inherit from `SECAIAssistantPlugin`.  
+2. **Import the Base Class**: Import the `TeisecAgentPlugin` class from `TeisecAgentPlugin.py`.  
+3. **Define the Plugin Class**: Define your plugin class and inherit from `TeisecAgentPlugin`.  
 4. **Implement Required Methods**:  
    - `__init__(self, name, description, plugintype, ...)`: Initialize your plugin with any additional parameters.  
    - `plugincapabilities(self)`: Provides the plugin capabilities.  
@@ -77,9 +77,9 @@ To create a new plugin, follow these steps:
 ### Example  
   
 ```python  
-from plugins.SECAIAssistantPlugin import SECAIAssistantPlugin  
+from plugins.TeisecAgentPlugin import TeisecAgentPlugin  
   
-class MyCustomPlugin(SECAIAssistantPlugin):  
+class MyCustomPlugin(TeisecAgentPlugin):  
     def __init__(self, name, description, plugintype, custom_param):  
         super().__init__(name, description, plugintype)  
         self.custom_param = custom_param  
@@ -95,4 +95,4 @@ class MyCustomPlugin(SECAIAssistantPlugin):
 ```        
 6. **Register the Plugin**: Ensure your plugin is registered in the main application to be utilized.  
    
-By following these steps, you can easily extend the functionality of the SEC AI Assistant by adding new plugins tailored to specific tasks.
+By following these steps, you can easily extend the functionality of the Teisec Agent by adding new plugins tailored to specific tasks.

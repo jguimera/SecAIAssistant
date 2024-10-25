@@ -1,9 +1,9 @@
 from flask import Flask
 from flask_socketio import SocketIO
-from app.SecAIAssistant  import SecAIAssistant
+from app.TeisecAgent  import TeisecAgent
   
 socketio = SocketIO()
-secAIAssistant=SecAIAssistant('interactive')
+teisecAgent=TeisecAgent('interactive')
 def create_app(debug=False):
     """Create an application."""
     app = Flask(__name__)

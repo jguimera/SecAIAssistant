@@ -2,7 +2,7 @@ import os
 import argparse  
 from colorama import Fore  
 from dotenv import load_dotenv  
-from app.SecAIAssistant  import SecAIAssistant  
+from app.TeisecAgent  import TeisecAgent
 from app.HelperFunctions import *
 load_dotenv()
 
@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(description="AI Assistant argument parser")
 parser.add_argument("auth", choices=["interactive", "client_secret", "default"], help="Authentication method to use.")  
 args = parser.parse_args()  
 auth_type = args.auth  
-secAIAssistant= SecAIAssistant(auth_type)
+teisecAgent= TeisecAgent(auth_type)
     
 # AI Assistant Start  
 def main():
@@ -29,14 +29,14 @@ def main():
                 print_info("Bye Bye")  
                 break  
             elif user_input.lower() == "clear":   
-                secAIAssistant.clear_session()
+                teisecAgent.clear_session()
             elif user_input.lower() == "help":   
-                plugin_help_list=secAIAssistant.get_plugin_help()
+                plugin_help_list=teisecAgent.get_plugin_help()
                 for plugin_help in plugin_help_list:
                     print_help(plugin_help)
             else:  
                 # Run Prompt  
-                processed_responses=secAIAssistant.run_prompt('terminal',user_input)
+                processed_responses=teisecAgent.run_prompt('terminal',user_input)
                 for response in processed_responses:
                     print_response(str(response))  
 if __name__ == "__main__":

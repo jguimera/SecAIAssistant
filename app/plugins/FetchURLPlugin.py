@@ -1,9 +1,9 @@
-from app.plugins.SECAIAssistantPlugin import SECAIAssistantPlugin  
+from app.plugins.TeisecAgentPlugin import TeisecAgentPlugin  
 import requests  
-from requests.exceptions import MissingSchema
+from requests.exceptions import MissingSchema,InvalidSchema
 from bs4 import BeautifulSoup  
  
-class FetchURLPlugin(SECAIAssistantPlugin):  
+class FetchURLPlugin(TeisecAgentPlugin):  
     """  
     Plugin to fetch and process data from a URL.  
     """  
@@ -79,6 +79,8 @@ class FetchURLPlugin(SECAIAssistantPlugin):
             else:  
                 return f"Failed to retrieve content. Status code: {response.status_code}" 
         except MissingSchema as e:  
+            return f"Failed to retrieve content. URL couldn't be extracted from the prompt."  
+        except InvalidSchema as e:  
             return f"Failed to retrieve content. URL couldn't be extracted from the prompt."  
     def runprompt(self, prompt, session,channel):  
         """  

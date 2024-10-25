@@ -1,5 +1,5 @@
 from app.HelperFunctions import * 
-class SECAIAssistantPlugin:
+class TeisecAgentPlugin:
     def __init__(self, name, description,plugintype):
         self.name = name
         self.description = name

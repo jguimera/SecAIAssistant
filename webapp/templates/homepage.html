@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <title>Teisec - CyberSec Agent</title> 
     <meta name="description" content="Teisec - Is a Python-based CyberSec Agent designed to interact with Security Solutions">
-    <meta name="keywords" content="Teisec, CyberSec Agent,AI Assistant, Chatbot, AI, Assistant, Chat, GPT, OpenAI, SEC, SECAI, SEC AI Assistant, Python Security Assistant, Python Security Assistant, Python Security Assistant">
+    <meta name="keywords" content="Teisec, CyberSec Agent,AI Assistant, Chatbot, AI, Assistant, Chat, GPT, OpenAI, SEC, Python Security Assistant, Python Security Assistant, Python Security Assistant">
     <meta name="author" content="Jaime Guimera Coll">
     <meta name="robots" content="index, follow">
 
@@ -49,8 +49,15 @@
                       <path stroke="transparent" id="svg_5" d="m-8.00002,70l231.22891,0l0,-19.90023l-231.22891,0l0,19.90023z" fill="transparent"/>
                      </g>
                     </g>
-                   </svg>
+                </svg>
+                <div class="flex justify-between">
+                    <label class="inline-flex items-center me-5 cursor-pointer">
+                    <span class="ms-3 mr-2 text-sm font-medium text-gray-900 dark:text-gray-600">System Messages</span>
+                    <input id="toggle-system" type="checkbox" value="" class="sr-only peer" checked>
+                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                  </label>
                    <button id="toggle-debug" class="bg-zinc-300 text-gray-800 rounded-md transition-all font-medium 2xl:px-6 px-2 overflow-hidden text-xs">Show Debug</button> 
+                </div>
             </div>
             <div  id="chat-container" class="relative flex flex-col grow">
                 <div id="messages" class="bg-gray-100 p-5 sm:rounded-lg mt-3 mb-3 h-full overflow-y-auto"></div>  
@@ -76,7 +83,7 @@
     </div>     
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>  
     <script>  
-        const socket = io.connect(location.protocol+'//' + document.domain + ':' + location.port + '/secai');  
+        const socket = io.connect(location.protocol+'//' + document.domain + ':' + location.port + '/teisec');  
         const messagesContainer = document.getElementById('messages');  
         const inputField = document.getElementById('input');  
         const sendButton = document.getElementById('send');  
@@ -85,13 +92,29 @@
         const loadingMessage = document.getElementById('loading-message');  
         const debugPanel = document.getElementById('debug-panel');  
         const debugMessagesContainer = document.getElementById('debug-messages');
-
+        
+        document.getElementById('toggle-system').addEventListener('change', function() {
+            const systemMessages = document.querySelectorAll('.system-message');
+            if (this.checked) {
+                systemMessages.forEach(message => {
+                    message.classList.remove('hidden');
+                });
+            } else {
+                systemMessages.forEach(message => {
+                    message.classList.add('hidden');
+                });
+            }
+         });
         function getChatBoxStyle(variant) {
             switch (variant) {
                 case 'bot':
                     return 'text-sm bg-indigo-300 text-black';
-                case 'debug':
-                    return 'text-xs bg-neutral-300 text-black';
+                case 'system':
+                    var classes='text-xs bg-neutral-300 text-black system-message'
+                    if (!document.getElementById('toggle-system').checked) {
+                        classes += ' hidden';
+                    }
+                    return classes;
                 default:
                     return 'text-sm bg-lime-600';
             }
@@ -167,7 +190,7 @@
             addMessage(message_object.message, 'bot');  
         });  
         socket.on('systemmessage', function(message_object) {  
-            addMessage(message_object.message, 'debug');
+            addMessage(message_object.message, 'system');
         });  
         socket.on('debugmessage', function(message_object) {  
             const debugMessageElement = document.createElement('div');  

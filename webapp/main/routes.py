@@ -4,4 +4,4 @@ from . import main
 
 @main.route('/', methods=['GET'])
 def index():
-    return render_template('secaiassistant.html')
+    return render_template('homepage.html')
