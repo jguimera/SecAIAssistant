@@ -54,7 +54,7 @@ Below you can find some prompts inside a session:
 `Use this url to create a detection for AD object deletion https://attack.mitre.org/datasources/DS0026/#Active%20Directory%20Object%20Deletion in Sentinel`
 `I need to craft a Sentinel Analytic Rule to detect the behaviour describe above. Generate the Sentinel Analytic rule to be deployed as an ARM template. Produce the output in json format`
 `Fetch this url https://learn.microsoft.com/en-us/azure/azure-monitor/logs/query-optimization and optimize the query of the above Sentinel Analytic rule`
-![Screenshot5](./images/TeisecAgeng-FetchURL.png)
+![Screenshot5](./images/TeisecAgent-FetchURL.png)
 
 ## Setup  
   
