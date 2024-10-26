@@ -1,9 +1,9 @@
-# SEC AI Assistant  
+# Teisec Agent 
   
-SEC AI Assistant is a Python-based AI assistant designed to interact with Security Solutions (currently only Microsoft Sentinel), fetch and process public URL data, and process the data and generate responses using LLMs (currently Azure OpenAI GPT models). This assistant can be used from the terminal or from a web interface. It supports different authentication methods.  
+Teisec Agent is a Python-based AI assistant designed to interact with Security Solutions (currently only Microsoft Sentinel), fetch and process public URL data, and process the data and generate responses using LLMs (currently Azure OpenAI GPT models). This assistant can be used from the terminal or from a web interface. It supports different authentication methods.  
 The goal of this project is to evaluate the usage and limits of using AI as part of Security Operations.
 Currently its implemented to be run locally and by one user at a time. All the prompts run in the same session. 
-![Screenshot1](./images/SECAIAssistant-Home.png)
+![Screenshot1](./images/TeisecAgent-AlertSummary.png)
 ## Disclaimer
 - Please be aware that using this tool will generate costs on your Azure OpenAI instance. It's important to monitor your usage to avoid unexpected charges. The more data that is processes by the LLM the higher the cost. See Sentinel plugin description below to understand possible cost increases. 
 - This tool does not incorporate any security measures. It is essential to understand that any data entered into the tool is not protected. Avoid using real or sensitive data, and ensure that you take necessary precautions to safeguard your information.
@@ -22,7 +22,7 @@ Every time the user submits a prompt the tool executes this steps:
 - For each task the tool will select the most appropriate plugin between the available ones and create the propmpt for this subtask.
 - Each task will will be executed by selected plugin. Plugins can make use of the different clients to retrieve data from external platforms/sites and use the LLM to process the prompt (ie. Select the Sentinel table and generate a KQL to be run). 
 - Response processing: Once the plugin sends back the response the underneatch LLM is used to produce a response using the data and the session context in the right format (terminal output/HTML)
-![Screenshot1](./images/SECAIAssistant-PromptFlow.png)
+![Screenshot2](./images/TeisecAgent-PromptFlow.png)
 
 ## Current plugins  
   
@@ -48,15 +48,13 @@ Below you can find some prompts inside a session:
 `Use the AlertIds from previous incident get the relevant details of the above security alerts. Include the description and the related entities`
 `Get the signin logs in the last 24 hours for the users included in the previous alerts`
 `Produce an Executive Summary of the investigated incident` 
-![Screenshot2](./images/SECAIAssistant-AlertDetails.png)
-![Screenshot3](./images/SECAIAssistant-SigninLogs.png)
-![Screenshot4](./images/SECAIAssistant-ExecutiveSummary.png)
+![Screenshot3](./images/TeisecAgent-SigninLogs.png)
+![Screenshot4](./images/TeisecAgent-ApplicationsSummary.png)
 ### URL Fetching and processing
 `Use this url to create a detection for AD object deletion https://attack.mitre.org/datasources/DS0026/#Active%20Directory%20Object%20Deletion in Sentinel`
 `I need to craft a Sentinel Analytic Rule to detect the behaviour describe above. Generate the Sentinel Analytic rule to be deployed as an ARM template. Produce the output in json format`
 `Fetch this url https://learn.microsoft.com/en-us/azure/azure-monitor/logs/query-optimization and optimize the query of the above Sentinel Analytic rule`
-![Screenshot5](./images/SECAIAssistant-AnalyticRuleGeneration1.png)
-![Screenshot6](./images/SECAIAssistant-AnalyticRuleGeneration2.png)
+![Screenshot5](./images/TeisecAgeng-FetchURL.png)
 
 ## Setup  
   
@@ -73,8 +71,8 @@ Below you can find some prompts inside a session:
   
 1. **Clone the repository:**  
     ```bash  
-    git clone https://github.com/jguimera/SecAIAssistant.git  
-    cd SecAIAssistant
+    git clone https://github.com/jguimera/TeisecAgent.git  
+    cd TeisecAgent
     ```  
   
 2. **Create and activate a virtual environment (optional but recommended):**  
@@ -114,10 +112,10 @@ Below you can find some prompts inside a session:
   
 ### Running the Assistant  
   
-To run the SEC AI Assistant, use one of the `run*.py` scripts. Currently you can run the tool for Terminal interface `runTerminal.py` or via Web`runWeb.py` You can choose the authentication method (`interactive`, `client_secret`, or `default`) by providing it as an argument.  
+To run the Teisec Agent, use one of the `run*.py` scripts. Currently you can run the tool for Terminal interface `runTerminal.py` or via Web`runWeb.py` You can choose the authentication method (`interactive`, `client_secret`, or `default`) by providing it as an argument.  
   
 ```bash  
-python runTerminal.py [auth]  
+python runWeb.py [auth]  
 ```
 
 For example, to run Web with interactive authentication:
@@ -131,7 +129,7 @@ A browser window will be open to login as an Entra ID user.
  
 - runWeb.py: Script to run the assistant from the web browser.
 - runTerminal.py: Script to run the assistant from the terminal.
-- app/SecAIAssistant.py: Main class implementing the assistant functionalities.
+- app/TeisecAgent.py: Main class implementing the assistant functionalities.
 - app/HelperFunctions.py: Helper functions for logging and printing messages.
 - app/clients/: Directory containing client classes for interacting with Azure services.Plugins will use these clients. 
 - app/plugins/: Directory containing plugin classes for various functionalities.
@@ -140,8 +138,8 @@ A browser window will be open to login as an Entra ID user.
 
 ## Extending the platform
 
-You can build your own clients and custom plugins by extending the SECAIAssistanPlugin class and adding your plugin to the project structure. See plugins README for more details. 
-Currently you need to manually add the custom plugin instantiation to the main SecAIAssistant class (load_plugins method)
+You can build your own clients and custom plugins by extending the TeisecAgentPlugin class and adding your plugin to the project structure. See plugins README for more details. 
+Currently you need to manually add the custom plugin instantiation to the main TeisecAgent class (load_plugins method)
 
 ## Contributing
  
